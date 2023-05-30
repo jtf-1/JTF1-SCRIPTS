@@ -8,7 +8,7 @@
 --
 -- If the menu should only appear for restricted client slots, set
 -- ADMIN.menuAllSlots to FALSE and add a client slot with the group name
--- *prefixed* with the value set in ADMIN.adminMenuName.
+-- *prefixed* with the value set in ADMIN.adminUnitName.
 --
 -- If the menu should be available in all mission slots, set ADMIN.menuAllSlots
 -- to TRUE.
