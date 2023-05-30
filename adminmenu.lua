@@ -22,6 +22,7 @@ ADMIN.menuAllSlots = false -- Set to true for admin menu to appear in all player
 ADMIN.defaultMissionRestart = "MISSION_RESTART"
 ADMIN.defaultMissionLoad = "MISSION_LOAD"
 ADMIN.defaultMissionFile = "missions.lua"
+ADMIN.defaultMissionPath = "C:\\Users\\jtf-1\\Saved Games\\missions"
 ADMIN.defaultMissionFolder = "missions"
 ADMIN.adminUnitName = "XX_" -- String to locate within unit name for admin slots
 
@@ -41,8 +42,8 @@ if JTF1.missionPath then
   ADMIN.missionPath = JTF1.missionPath
   BASE:T(ADMIN.missionPath)
 else
-  if lfs then -- check if game environment is desanitised
-    ADMIN.missionPath = (lfs.writedir() .. "\\" .. ADMIN.defaultMissionFolder) -- set mission path to current write directory
+  if ADMIN.defaultMissionPath then -- check if game environment is desanitised
+    ADMIN.missionPath = ADMIN.defaultMissionPath -- set mission path to current write directory
   else
     ADMIN.missionPath = "" -- empty mission path will bypass all but restart mission menu option
   end
