@@ -6,18 +6,12 @@
 --
 -- Add F10 command menus for selecting a mission to load, or restarting the current mission.
 --
--- In the Mission Editor, add (a) switched condition trigger(s) with a 
--- FLAG EQUALS condition, where flag number is ADMIN.flagLoadMission value
--- and flag value is the ADMIN.missionList[x].missionFlagValue (see below).
--- A missionFlagValue == 0 is used to trigger restart of the current
--- mission using jtf1-hooks.lua.
---
 -- If the menu should only appear for restricted client slots, set
 -- ADMIN.menuAllSlots to FALSE and add a client slot with the group name
 -- *prefixed* with the value set in ADMIN.adminMenuName.
 --
 -- If the menu should be available in all mission slots, set ADMIN.menuAllSlots
--- to TRUE.|
+-- to TRUE.
 -- 
 
 ADMIN = EVENTHANDLER:New()
