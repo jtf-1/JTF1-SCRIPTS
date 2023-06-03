@@ -13,6 +13,9 @@
 -- If the menu should be available in all mission slots, set ADMIN.menuAllSlots
 -- to TRUE.
 -- 
+if not JTF1 then 
+  JTF1 = {}
+end
 
 ADMIN = EVENTHANDLER:New()
 ADMIN:HandleEvent(EVENTS.PlayerEnterAircraft)
