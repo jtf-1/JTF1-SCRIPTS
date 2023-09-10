@@ -131,12 +131,47 @@ function SUPPORTAC:Start()
 					_msg = string.format(self.traceTitle .. "start - Using spawn template from SUPPORTAC.template for %s.", missionSpawnType)
 					SUPPORTAC:T(_msg)
 
+					-- get template to use for spawn
+					local spawnTemplate = SUPPORTAC.template[missionSpawnType]
+
+					-- apply mission callsign to template (for correct display in F10 map)
+					local missionCallsignId = mission.callsign
+					local missionCallsignNumber = mission.callsignNumber or 1
+
+					-- default callsign name to use if not found
+					local missionCallsignName = "Ghost"
+
+					if missionCallsignId then
+						-- table of callsigns to search for callsign name
+						local callsignTable = CALLSIGN.Tanker
+						if mission.category == SUPPORTAC.category.awacs then
+							callsignTable = CALLSIGN.AWACS
+						end
+
+						for name, value in pairs(callsignTable) do
+							if value == missionCallsignId then
+								missionCallsignName = name
+							end
+						end
+						
+					else
+						missionCallsignId = 1
+					end
+					
+					local missionCallsign = string.format("%s%d1", missionCallsignName, missionCallsignNumber)
+					spawnTemplate.units[1]["callsign"]["name"] = missionCallsign
+					spawnTemplate.units[1]["callsign"][1] = missionCallsignId
+					spawnTemplate.units[1]["callsign"][2] = missionCallsignNumber
+					spawnTemplate.units[1]["callsign"][1] = 1
+					_msg = string.format(self.traceTitle .. "Callsign for mission %s is %s", mission.name, spawnTemplate.units[1]["callsign"]["name"])
+					SUPPORTAC:T(_msg)
+					
 					local missionCountryid = mission.countryid or SUPPORTAC.missionDefault.countryid
 					local missionCoalition = mission.coalition or SUPPORTAC.missionDefault.coalition
 					local missionGroupCategory = mission.groupCategory or SUPPORTAC.missionDefault.groupCategory
 
 					-- add mission spawn object using template in SUPPORTAC.template[missionSpawnType]
-					mission.missionSpawnTemplate = SPAWN:NewFromTemplate(SUPPORTAC.template[missionSpawnType], missionSpawnType, missionSpawnAlias)
+					mission.missionSpawnTemplate = SPAWN:NewFromTemplate(spawnTemplate, missionSpawnType, missionSpawnAlias)
 						:InitCountry(missionCountryid) -- set spawn countryid
 						:InitCoalition(missionCoalition) -- set spawn coalition
 						:InitCategory(missionGroupCategory) -- set category
@@ -153,6 +188,16 @@ function SUPPORTAC:Start()
 					mission.missionSpawnTemplate:InitLateActivated() -- set template to late activated
 					mission.missionSpawnTemplate:InitPositionCoordinate(mission.spawnCoordinate) -- set the default location at which the template is created
 					mission.missionSpawnTemplate:InitHeading(mission.heading) -- set the default heading for the spawn template
+					mission.missionSpawnTemplate:OnSpawnGroup(
+						function(spawngroup)
+							local spawnGroupName = spawngroup:GetName()
+							_msg = string.format(SUPPORTAC.traceTitle .. "Spawned Group %s", spawnGroupName)
+							BASE:T(_msg)
+		
+							spawngroup:CommandSetCallsign(mission.callsign, mission.callsignNumber) -- set the template callsign
+						end
+						,mission
+					)
 
 					_msg = string.format(self.traceTitle .. "New late activated mission spawn template added for %s", missionSpawnAlias)
 					SUPPORTAC:T({_msg, mission.missionSpawnTemplate})
