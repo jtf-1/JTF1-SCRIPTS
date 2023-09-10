@@ -17,14 +17,6 @@ MISSIONTIMER.msgSchedule = {60, 30, 10, 5} -- Schedule for mission restart warni
 MISSIONTIMER.restartDelay =  4 -- time in minutes to delay restart if active clients are present.
 MISSIONTIMER.useSRS = true -- default flag to determine if htis module should send messages through SRS.
 
-
--- MISSIONTIMER.defaults = {
---   durationHrs = 11, -- Mission run time in HOURS
---   msgSchedule = {60, 30, 10, 5}, -- Schedule for mission restart warning messages. Time in minutes.
---   restartDelay =  4, -- time in minutes to delay restart if active clients are present.
---   useSRS = true, -- default flag to determine if htis module should send messages through SRS.
--- }
-
 local useSRS
 local _msg
 
