@@ -30,18 +30,26 @@ function CVNCONTROL:Start()
 		--local tacan = cvn.tacan
 		
 		cvn.navygroup = NAVYGROUP:New(GROUP:FindByName(cvn.group)) -- cvn.navygroup
-			:SetPatrolAdInfinitum()
-			:SetDefaultSpeed(cvn.cruise)
+			--:Activate()
+		
+		cvn.navygroup:SetDefaultSpeed(cvn.cruise)
 			:SetVerbosity(3)
-			:Activate()
-	
-		-- if trace is on, draw the zone on the map
-		if BASE:IsTrace() then 
-			-- draw waypoints on map
-			cvn.navygroup:MarkWaypoints(60)
-		end
-			
-		-- add recovery tanker if cvn.recoverytanker is true
+			:SwitchTACAN(cvn.tacan, cvn.tacanid) -- add
+			:SwitchICLS(cvn.icls, cvn.iclsid) -- add
+			:SwitchRadio(cvn.radio,cvn.radiomodulation) -- add
+			:SwitchAlarmstate(ENUMS.AlarmState.Red) -- add
+			:SwitchROE(ENUMS.ROE.WeaponFree) -- add
+			:SetPatrolAdInfinitum()
+
+			-- if trace is on, draw the zone on the map
+			if BASE:IsTrace() then 
+				_msg = string.format("Add waypoint marks for group %s", cvn.name)
+				BASE:T(_msg)
+				-- draw waypoints on map
+				cvn.navygroup:MarkWaypoints()
+			end
+
+			-- add recovery tanker if cvn.recoverytanker is true
 		function cvn.navygroup:OnAfterElementSpawned(From, Event, To, Element)
 			_msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
 			BASE:T({_msg,Element})
@@ -53,16 +61,16 @@ function CVNCONTROL:Start()
 				_msg = string.format("%sLead Element %s", CVNCONTROL.traceTitle, Element.name)
 				BASE:T(_msg)
 	
-				-- set carrier nav and radio
-				self:SwitchTACAN(cvn.tacan, cvn.tacanid)
-				self:SwitchICLS(cvn.icls, cvn.iclsid)
-				self:SwitchRadio(cvn.radio,cvn.radiomodulation)
-				self:SwitchAlarmstate(ENUMS.AlarmState.Red)
-				self:SwitchROE(ENUMS.ROE.WeaponFree)
+				-- -- set carrier nav and radio
+				-- self:SwitchTACAN(cvn.tacan, cvn.tacanid)
+				-- self:SwitchICLS(cvn.icls, cvn.iclsid)
+				-- self:SwitchRadio(cvn.radio,cvn.radiomodulation)
+				-- self:SwitchAlarmstate(ENUMS.AlarmState.Red)
+				-- self:SwitchROE(ENUMS.ROE.WeaponFree)
 
-				-- set cruise
-				self:SetSpeed(cvn.cruise)
-	
+				-- -- set cruise
+				-- self:SetSpeed(cvn.cruise)
+
 				-- add recovery tanker
 				if cvn.tanker then
 					_msg = string.format("%sRecovery Tanker for %s is required", CVNCONTROL.traceTitle, cvn.name)
@@ -140,7 +148,10 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 		local timeEnd = UTILS.SecondsToClock(secondsEnd,true)
 		local windDir = UTILS.Round(cvn.navygroup:GetWind(),0)
 		local deckOffSet = cvn.deckoffset
-		local uturn = cvn.uturn or true
+		local uturn = cvn.uturn
+		if uturn == nil then
+			uturn = true
+		end
 		local recoverySpeed = cvn.recoveryspeed
 
 		_msg =string.format("%s is turning for recovery.\n\nRecovery Window is open from %s until %s.\n\nWind is at %d", cvn.name, timeStart, timeEnd, windDir)
@@ -153,15 +164,6 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 
 end
 
--- function CVNCONTROL:recovery(cvn, minutes)
-
--- 	local cvnWindowTime = minutes 
--- 	_msg = string.format("A %s recovery window has been requested for %d minutes.", cvn.name, minutes)
--- 	MESSAGE:New(_msg, 5):ToBlue()
--- 	SCHEDULER:New( nil,	CVNCONTROL.start_recovery, {CVNCONTROL, cvn}, 2)
-
--- end
-
 function CVNCONTROL:recoveryCancel(cvn, cruise)
 	_msg = string.format("%sCancel recovery window for CVN %s.", self.traceTitle, cvn.name)
 	BASE:T(_msg)
@@ -169,7 +171,7 @@ function CVNCONTROL:recoveryCancel(cvn, cruise)
 	if cvn.navygroup:IsSteamingIntoWind() then
 
 		cvn.navygroup:TurnIntoWindStop()
-		cvn.navygroup:SetSpeed(cruise)
+		--cvn.navygroup:SetSpeed(cruise)
 	
 		_msg = string.format("The recovery window for %s has been cancelled.", cvn.name)
 		MESSAGE:New(_msg, 5):ToBlue()
