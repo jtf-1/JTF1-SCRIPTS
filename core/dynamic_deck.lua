@@ -22,10 +22,10 @@ env.info( "[JTF-1] dynamic_deck_population" )
 --     3. dynamic_deck_data.lua
 --
 
-DYNDECK = {
-    menu = {},
-    templates = {},
-}
+DYNDECK = DYNDECK or {}
+
+DYNDECK.menu = {}
+DYNDECK.templates = {}
 
 -- Function to parse through DYNDECK.ship and add menu items
 function DYNDECK:Start()
