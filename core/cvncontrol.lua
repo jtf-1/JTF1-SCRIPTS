@@ -15,6 +15,7 @@ CVNCONTROL.default = {
 	countryid = country.id.USA, -- default country to be used for predfined templates
 	coalition = coalition.side.BLUE, -- default coalition to use for predefined templates
 	groupcategory = Group.Category.AIRPLANE, -- default group category to use for predefined templates
+	recoverydelay = 0 -- time, in seconds, for which to delay the commencement of the launch/recovery window
 }
 
 function CVNCONTROL:Start()
@@ -27,19 +28,20 @@ function CVNCONTROL:Start()
 		cvn.recoverySpeed = cvn.recoveryspeed or self.default.recoveryspeed
 		cvn.cruise = cvn.cruise or self.default.cruise
 		cvn.recoveryWindow = cvn.recoveryWindow or self.default.recoverywindow
+		cvn.recoveryDelay = cvn.recoveryDelay or self.default.recoverydelay
 		--local tacan = cvn.tacan
 		
 		cvn.navygroup = NAVYGROUP:New(GROUP:FindByName(cvn.group)) -- cvn.navygroup
 			--:Activate()
 		
 		cvn.navygroup:SetDefaultSpeed(cvn.cruise)
-			:SetVerbosity(3)
-			:SwitchTACAN(cvn.tacan, cvn.tacanid) -- add
-			:SwitchICLS(cvn.icls, cvn.iclsid) -- add
-			:SwitchRadio(cvn.radio,cvn.radiomodulation) -- add
-			:SwitchAlarmstate(ENUMS.AlarmState.Red) -- add
-			:SwitchROE(ENUMS.ROE.WeaponFree) -- add
-			:SetPatrolAdInfinitum()
+		cvn.navygroup:SetVerbosity(3)
+		cvn.navygroup:SwitchTACAN(cvn.tacan, cvn.tacanid) -- add
+		cvn.navygroup:SwitchICLS(cvn.icls, cvn.iclsid) -- add
+		cvn.navygroup:SwitchRadio(cvn.radio,cvn.radiomodulation) -- add
+		cvn.navygroup:SwitchAlarmstate(ENUMS.AlarmState.Red) -- add
+		cvn.navygroup:SwitchROE(ENUMS.ROE.WeaponFree) -- add
+		cvn.navygroup:SetPatrolAdInfinitum(true)
 
 			-- if trace is on, draw the zone on the map
 			if BASE:IsTrace() then 
@@ -49,7 +51,7 @@ function CVNCONTROL:Start()
 				cvn.navygroup:MarkWaypoints()
 			end
 
-			-- add recovery tanker if cvn.recoverytanker is true
+		-- add recovery tanker if cvn.recoverytanker is true
 		function cvn.navygroup:OnAfterElementSpawned(From, Event, To, Element)
 			_msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
 			BASE:T({_msg,Element})
@@ -61,16 +63,6 @@ function CVNCONTROL:Start()
 				_msg = string.format("%sLead Element %s", CVNCONTROL.traceTitle, Element.name)
 				BASE:T(_msg)
 	
-				-- -- set carrier nav and radio
-				-- self:SwitchTACAN(cvn.tacan, cvn.tacanid)
-				-- self:SwitchICLS(cvn.icls, cvn.iclsid)
-				-- self:SwitchRadio(cvn.radio,cvn.radiomodulation)
-				-- self:SwitchAlarmstate(ENUMS.AlarmState.Red)
-				-- self:SwitchROE(ENUMS.ROE.WeaponFree)
-
-				-- -- set cruise
-				-- self:SetSpeed(cvn.cruise)
-
 				-- add recovery tanker
 				if cvn.tanker then
 					_msg = string.format("%sRecovery Tanker for %s is required", CVNCONTROL.traceTitle, cvn.name)
@@ -92,11 +84,11 @@ function CVNCONTROL:Start()
 		
 		-- add top menu if not already added
 		if not self.menu.top then
-			if JTF1.menu.root then
-				self.menu.top = MENU_COALITION:New(coalition.side.BLUE,"CVN Control", JTF1.menu.root)
-			else
-				self.menu.top = MENU_COALITION:New(coalition.side.BLUE,"CVN Control")
-			end
+			--if JTF1.menu.root then
+				self.menu.top = MENU_COALITION:New(coalition.side.BLUE,"Carrier Control", JTF1.menu.root)
+			--else
+			-- 	self.menu.top = MENU_COALITION:New(coalition.side.BLUE,"Carrier Control")
+			-- end
 		end
 	
 		-- add menu for this CVN
@@ -142,9 +134,9 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 		BASE:T(_msg)
 
 		local timeNow = timer.getAbsTime()
-		local secondsStart = timeNow
+		local secondsStart = timeNow + cvn.recoveryDelay
 		local timeStart = UTILS.SecondsToClock(secondsStart,true)
-		local secondsEnd = secondsStart + minutes * 60
+		local secondsEnd = secondsStart + (minutes * 60)
 		local timeEnd = UTILS.SecondsToClock(secondsEnd,true)
 		local windDir = UTILS.Round(cvn.navygroup:GetWind(),0)
 		local deckOffSet = cvn.deckoffset
