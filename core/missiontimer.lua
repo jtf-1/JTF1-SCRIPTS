@@ -8,13 +8,15 @@ env.info( "[JTF-1] missiontimer.lua" )
 -- current mission via jtf1-hooks.lua.
 --
 MISSIONTIMER = {}
+-- debug messages title
 MISSIONTIMER.traceTitle = "[JTF-1 MISSIONTIMER] "
-
-MISSIONTIMER.msgWarning = {} -- schedule container
+ -- schedule container
+MISSIONTIMER.msgWarning = {}
+-- DEFAULT settings. WIll be oiverwritten by values defined in _data file.
 MISSIONTIMER.missionRestart = ( JTF1.missionRestart and JTF1.missionRestart or "ADMIN9999" ) -- Message to trigger mission restart via jtf1-hooks
-MISSIONTIMER.durationHrs = 11 -- Mission run time in HOURS
+MISSIONTIMER.durationHrs = 24 -- Mission run time in HOURS
 MISSIONTIMER.msgSchedule = {60, 30, 10, 5} -- Schedule for mission restart warning messages. Time in minutes.
-MISSIONTIMER.restartDelay =  4 -- time in minutes to delay restart if active clients are present.
+MISSIONTIMER.restartDelay =  10 -- time in minutes to delay restart if active clients are present.
 MISSIONTIMER.useSRS = true -- default flag to determine if htis module should send messages through SRS.
 
 local useSRS
