@@ -28,10 +28,11 @@ ADMIN = {
 	defaultMissionFolder = "missions",
 	defaultMissionPath = "C:\\Users\\jtf-1\\Saved Games\\missions",
 	adminUnitName = "XX_", -- String to locate within unit name for admin slots
-	missionRestart = JTF1.missionRestart or ADMIN.defaultMissionRestart,
-	missionLoad = JTF1.missionLoad or ADMIN.defaultMissionLoad,
-	missionFile = JTF1.missionFile or ADMIN.defaultMissionFile,
 }
+
+ADMIN.missionRestart = JTF1.missionRestart or ADMIN.defaultMissionRestart
+ADMIN.missionLoad = JTF1.missionLoad or ADMIN.defaultMissionLoad
+ADMIN.missionFile = JTF1.missionFile or ADMIN.defaultMissionFile
 
 -- ADMIN = EVENTHANDLER:New()
 -- ADMIN:HandleEvent(EVENTS.PlayerEnterAircraft)
@@ -70,10 +71,10 @@ function ADMIN:Start()
 		dofile(missionPathFile)
 		ADMIN.missionList = MISSIONLIST -- map mission list values to ADMIN.missionList
 		BASE:T({ADMIN.traceTitle .. "ADMIN.missionList", ADMIN.missionList})
-		-- if present append local server mission list to ADMIN.missionList
+		-- if present insert local server mission list at top of ADMIN.missionList
 		if JTF1.missionList then
 			BASE:T({ADMIN.traceTitle .. "JTF1.missionList", ADMIN.missionList})
-			table.insert(ADMIN.missionList, JTF1.missionList[1])
+			table.insert(ADMIN.missionList, 1, JTF1.missionList[1])
 			BASE:T({ADMIN.traceTitle .. "ADMIN.missionList with local server list", ADMIN.missionList})
 		end
 	else
