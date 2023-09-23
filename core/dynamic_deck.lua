@@ -26,6 +26,7 @@ DYNDECK = DYNDECK or {}
 
 DYNDECK.menu = {}
 DYNDECK.templates = {}
+DYNDECK.traceTitle = "[JTF-1 DYNDECK] "
 
 -- Function to parse through DYNDECK.ship and add menu items
 function DYNDECK:Start()
@@ -48,6 +49,14 @@ function DYNDECK:Start()
 
     -- add ship menus
      for shipIndex, menuship in ipairs(DYNDECK.ship) do
+
+        if menuship.unit then
+            local unit = UNIT:FindByName(menuship.unit)
+            local unitId = unit:GetID()
+            _msg = self.traceTitle .. "Group ID = " .. unitId
+            BASE:T(_msg)
+            menuship.id = tonumber(unitId)
+        end
   
         -- add menu for ship
         DYNDECK.menu[menuship.id] = MENU_MISSION:New(menuship.name, DYNDECK.menu)
