@@ -79,8 +79,12 @@ function SUPPORTAC:Start()
 
 			-- airbase to which aircraft will fly on RTB
 			local missionTheatre = env.mission.theatre
+			_msg = SUPPORTAC.traceTitle .. tostring(missionTheatre)
+			self:T(_msg)
 			local missionHomeAirbase = mission.homeAirbase or SUPPORTAC.homeAirbase[missionTheatre]
-			_msg = string.format(self.traceTitle .. "start - Mission %s set to use %s as home base.", mission.name, mission.homeAirbase)
+			_msg = SUPPORTAC.traceTitle .. tostring(missionHomeAirbase)
+			self:T(_msg)
+			_msg = string.format(self.traceTitle .. "start - Mission %s set to use %s as home base.", mission.name, missionHomeAirbase)
 			SUPPORTAC:T(_msg)
 		if missionHomeAirbase then -- CHECK HOME AIRBASE
 				_msg = string.format(self.traceTitle .. "start - Mission %s using %s as home base.", mission.name, missionHomeAirbase)
@@ -157,14 +161,22 @@ function SUPPORTAC:Start()
 					else
 						missionCallsignId = 1
 					end
-					
-					local missionCallsign = string.format("%s%d1", missionCallsignName, missionCallsignNumber)
-					spawnTemplate.units[1]["callsign"]["name"] = missionCallsign
-					spawnTemplate.units[1]["callsign"][1] = missionCallsignId
-					spawnTemplate.units[1]["callsign"][2] = missionCallsignNumber
-					spawnTemplate.units[1]["callsign"][1] = 1
-					_msg = string.format(self.traceTitle .. "Callsign for mission %s is %s", mission.name, spawnTemplate.units[1]["callsign"]["name"])
-					SUPPORTAC:T(_msg)
+
+					local missionUnit = spawnTemplate.units[1]
+
+					if type(missionUnit["callsign"]) == "table" then
+						-- local missionCallsign = string.format("%s%d1", missionCallsignName, missionCallsignNumber)
+						missionUnit["callsign"]["name"] = string.format("%s%d1", missionCallsignName, missionCallsignNumber)
+						missionUnit["callsign"][1] = missionCallsignId
+						missionUnit["callsign"][2] = missionCallsignNumber
+						missionUnit["callsign"][3] = 1
+						_msg = string.format(self.traceTitle .. "Callsign for mission %s is %s", mission.name, spawnTemplate.units[1]["callsign"]["name"])
+						SUPPORTAC:T(_msg)
+					elseif type(missionUnit["callsign"]) == "number" then
+						missionUnit["callsign"] = tonumber(missionCallsignId)
+					else
+						missionUnit["callsign"] = missionCallsignId
+					end
 					
 					local missionCountryid = mission.countryid or SUPPORTAC.missionDefault.countryid
 					local missionCoalition = mission.coalition or SUPPORTAC.missionDefault.coalition
@@ -1438,9 +1450,6 @@ SUPPORTAC.template = {
 		["modulation"] = 0,
 		["frequency"] = 251,
 	}, -- end of ["S3BTANKER"]
-
-
-
 } -- end SUPPORTAC.template
 
 -- END SUPPORT AIRCRAFT SECTION
