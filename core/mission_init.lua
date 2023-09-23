@@ -7,7 +7,7 @@ BASE:TraceOnOff(false)
 
 JTF1 = {
 	traceTitle = "[JTF-1 MISSIONINIT] ",
-	missionRestart = "ADMIN9999", -- Message to trigger mission restart via jtf1-hooks
+	missionRestart = "MISSION_RESTART", -- Message to trigger mission restart via jtf1-hooks
 	flagLoadMission = 9999, -- flag for load misison trigger
 	defaultServerConfigFile = "LocalServerSettings.lua", -- srs server settings file name
 	menu = {},
@@ -15,22 +15,25 @@ JTF1 = {
 
 function JTF1:Start()
 	if not lfs then
-		BASE:E( "[JTF-1] WARNING: lfs not desanitized. Loading will look into your DCS installation root directory rather than the \"Saved Games\\DCS\" folder.")
+		_msg = JTF1.traceTitle .. "WARNING: lfs not desanitized. Loading will look into your DCS installation root directory rather than the \"Saved Games\\DCS\" folder."
+		BASE:E(_msg)
 	else
 
 		-- load local server settings file
 		local settingsFile = lfs.writedir() .. JTF1.defaultServerConfigFile
 
 		if UTILS.CheckFileExists(lfs.writedir(), JTF1.defaultServerConfigFile) then
-			BASE:I( "[JTF-1] Mission INIT settingsFile = " .. settingsFile )
+			_msg = string.format("%sMission INIT settingsFile = %s", JTF1.traceTitle, settingsFile) 
+			BASE:I(_msg)
 			dofile(settingsFile)
 			for _name, _value in pairs(LOCALSERVER) do
 				JTF1[_name] = _value
 			end
-			BASE:I("[JTF-1] Local server settings to follow...")
-			BASE:I(JTF1)
+			_msg = JTF1.traceTitle .. "Local server settings"
+			BASE:I({_msg, JTF1})
 		else
-			BASE:E("[JTF-1] Error! Server config file not found. Using mission defaults")
+			_msg = JTF1.traceTitle .. "Error! Server config file not found. Using mission defaults"
+			BASE:E(_msg)
 		end
 
 	end
