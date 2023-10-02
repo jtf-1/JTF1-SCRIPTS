@@ -455,6 +455,7 @@ SUPPORTAC.missionDefault = {
 -- pre-defined spawn templates to be used as an alternative to placing late activated templates in the miz
 SUPPORTAC.template = {
 	["KC-135"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -614,6 +615,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,
 	}, -- end of [KC-135]
 	["KC-135MPRS"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -773,6 +775,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,
 	}, -- end of [KC-135MPRS]
 	["KC-130"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -913,6 +916,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,		
 	}, -- end of ["KC-130"]
 	["AWACS-E3A"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -1046,6 +1050,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,
 	}, -- end of [AWACS-E3A]
   	["AWACS-E2D"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -1179,6 +1184,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,		
 	}, -- end of ["AWACS-E2D"]
 	["AWACS-A50"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -1331,6 +1337,7 @@ SUPPORTAC.template = {
 		["frequency"] = 251,
 	}, -- end of ["AWACS-RED"]
 	["S3BTANKER"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -1391,6 +1398,24 @@ SUPPORTAC.template = {
 										}, -- end of ["action"]
 									}, -- end of ["params"]
 								}, -- end of [2]
+								[3] = 
+								{
+									["number"] = 3,
+									["auto"] = false,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "SetInvisible",
+											["params"] = 
+											{
+												["value"] = true,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [3]
 							}, -- end of ["tasks"]
 						}, -- end of ["params"]
 					}, -- end of ["task"]
