@@ -20,7 +20,7 @@ env.info( "[JTF-1] adminmenu.lua" )
 
 ADMIN = {
 	ClassName = "ADMIN",
-	traceTitle = "[JTF-1 ADMIN] ",
+	traceTitle = "[JTF-1] ",
 	menuAllSlots = false, -- Set to true for admin menu to appear in all player slots
 	defaultMissionRestart = "MISSION_RESTART",
 	defaultMissionLoad = "MISSION_LOAD",
@@ -34,9 +34,9 @@ ADMIN.missionRestart = JTF1.missionRestart or ADMIN.defaultMissionRestart
 ADMIN.missionLoad = JTF1.missionLoad or ADMIN.defaultMissionLoad
 ADMIN.missionFile = JTF1.missionFile or ADMIN.defaultMissionFile
 
--- ADMIN = EVENTHANDLER:New()
--- ADMIN:HandleEvent(EVENTS.PlayerEnterAircraft)
+-- inherit methods,  properties etc from BASE for event handler, trace etc
 ADMIN = BASE:Inherit(ADMIN, BASE:New())
+-- ADMIN event handler
 ADMIN:HandleEvent(EVENTS.PlayerEnterAircraft)
 
 
@@ -53,7 +53,7 @@ function ADMIN:Start()
 	if JTF1.missionPath then
 		ADMIN.missionPath = JTF1.missionPath
 		_msg = string.format(ADMIN.traceTitle .. "missionPath = %s", ADMIN.missionPath)
-		BASE:T(_msg)
+		self:T(_msg)
 	else
 		if lfs then -- check if game environment is desanitised
 			ADMIN.missionPath = (lfs.writedir() .. "\\" .. ADMIN.defaultMissionFolder) -- set mission path to current write directory
@@ -64,21 +64,21 @@ function ADMIN:Start()
 
 	-- set full path to mission list
 	local missionPathFile = ADMIN.missionPath .. "\\" .. ADMIN.missionFile
-	BASE:T(ADMIN.traceTitle .. "mission list file: " .. missionPathFile)
+	self:T(ADMIN.traceTitle .. "mission list file: " .. missionPathFile)
 	-- check mission list lua file exists. If it does run it. 
 	if UTILS.CheckFileExists(ADMIN.missionPath, ADMIN.missionFile) then
-		BASE:T( ADMIN.traceTitle .. "Mission list file exists")
+		self:T( ADMIN.traceTitle .. "Mission list file exists")
 		dofile(missionPathFile)
 		ADMIN.missionList = MISSIONLIST -- map mission list values to ADMIN.missionList
-		BASE:T({ADMIN.traceTitle .. "ADMIN.missionList", ADMIN.missionList})
+		self:T({ADMIN.traceTitle .. "ADMIN.missionList", ADMIN.missionList})
 		-- if present insert local server mission list at top of ADMIN.missionList
 		if JTF1.missionList then
-			BASE:T({ADMIN.traceTitle .. "JTF1.missionList", ADMIN.missionList})
+			self:T({ADMIN.traceTitle .. "JTF1.missionList", ADMIN.missionList})
 			table.insert(ADMIN.missionList, 1, JTF1.missionList[1])
-			BASE:T({ADMIN.traceTitle .. "ADMIN.missionList with local server list", ADMIN.missionList})
+			self:T({ADMIN.traceTitle .. "ADMIN.missionList with local server list", ADMIN.missionList})
 		end
 	else
-		BASE:E(ADMIN.traceTitle .. "Error! Mission list file not found.")        
+		self:E(ADMIN.traceTitle .. "Error! Mission list file not found.")        
 	end
 
 end
@@ -116,9 +116,9 @@ end
 function ADMIN:LoadMission(playerName, missionFile)
 	local adminMessage = ADMIN.missionRestart
 	if playerName then
-		BASE:T(ADMIN.traceTitle .. "Restart or load called by player name: " .. playerName)
+		self:T(ADMIN.traceTitle .. "Restart or load called by player name: " .. playerName)
 	else
-		BASE:T(ADMIN.traceTitle .. "Restart or load called by non-player!")
+		self:T(ADMIN.traceTitle .. "Restart or load called by non-player!")
 	end
 	if missionFile then
 		adminMessage = ADMIN.missionLoad .. "-" .. missionFile
@@ -143,21 +143,21 @@ function ADMIN:BuildAdminMenu(unit,playername)
 	MENU_GROUP_COMMAND:New( adminGroup, "Restart Current Mission", adminMenu, ADMIN.LoadMission, self, playername)
 	-- if a mission list has been found add submenus for it
 	if ADMIN.missionList then
-		BASE:T(ADMIN.traceTitle .. "Build missionList.")
+		self:T(ADMIN.traceTitle .. "Build missionList.")
 		-- add menus to load missions
 		for i, missionList in ipairs(ADMIN.missionList) do
-			BASE:T(missionList)
+			self:T(missionList)
 			-- add menu for mission group  
 			local missionName = MENU_GROUP:New(adminGroup, missionList.missionName, adminMenu)
 			-- add menus for each mission file in the group
 			for j, missionMenu in ipairs(missionList.missionMenu) do
-				BASE:T(missionMenu)
+				self:T(missionMenu)
 				-- add full path to mission file if defined
 				local missionFile = ADMIN.missionPath .. "\\" .. missionMenu.missionFile
 				-- add command to load mission
 				MENU_GROUP_COMMAND:New( adminGroup, missionMenu.menuText, missionName, ADMIN.LoadMission, self, playername, missionFile )
 				_msg = string.format(ADMIN.traceTitle .. "Admin Menu Mission %s", missionFile)
-				BASE:T(_msg)
+				self:T(_msg)
 			end
 		end
 	end
