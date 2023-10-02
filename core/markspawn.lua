@@ -3,6 +3,9 @@ env.info( "[JTF-1] markspawn" )
 --- BEGIN MARK SPAWN
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --
+-- Sourced from Virtual 57th and refactored for JTF-1
+--
+--
 -- **NOTE**: MARKSPAWN_TEMPLATES.LUA MUST BE LOADED AFTER THIS FILE IS LOADED!
 --
 -- This file contains functions and key values and should be loaded first.
@@ -16,9 +19,6 @@ env.info( "[JTF-1] markspawn" )
 --     1. markspawn.lua
 --     2. markspawn_templates.lua
 --     3. [OPTIONAL] markspawn_data.lua
---
---
--- Sourced from Virtual 57th and refactored for JTF-1
 --
 -- Use F10 map marks to spawn BVR opponents or ground threats anywhere on the map. 
 -- Add mark to map then type the CMD syntax below in the map mark text field. 
