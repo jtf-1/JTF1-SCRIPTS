@@ -3,8 +3,10 @@ env.info( "[JTF-1] cvncontrol.lua" )
 --- BEGIN CVNCONTROL MENU SECTION
 
 CVNCONTROL = {}
-
-CVNCONTROL.traceTitle = "[JTF-1 CVNCONTROL] "
+-- inherit methods,  properties etc from BASE for event handler, trace etc
+CVNCONTROL = BASE:Inherit( CVNCONTROL, BASE:New() )
+CVNCONTROL.ClassName = "CVNCONTROL"
+CVNCONTROL.traceTitle = "[JTF-1] "
 
 CVNCONTROL.menu = {}
 
@@ -43,44 +45,44 @@ function CVNCONTROL:Start()
 		cvn.navygroup:SwitchROE(ENUMS.ROE.WeaponFree) -- add
 		cvn.navygroup:SetPatrolAdInfinitum(true)
 
-			-- if trace is on, draw the zone on the map
-			if BASE:IsTrace() then 
-				_msg = string.format("Add waypoint marks for group %s", cvn.name)
-				BASE:T(_msg)
-				-- draw waypoints on map
-				cvn.navygroup:MarkWaypoints()
-			end
+		-- if trace is on, draw the zone on the map
+		if BASE:IsTrace() then 
+			_msg = string.format("Add waypoint marks for group %s", cvn.name)
+			CVNCONTROL:T(_msg)
+			-- draw waypoints on map
+			cvn.navygroup:MarkWaypoints()
+		end
 
 		-- add recovery tanker if cvn.recoverytanker is true
 		function cvn.navygroup:OnAfterElementSpawned(From, Event, To, Element)
 			_msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
-			BASE:T({_msg,Element})
+			CVNCONTROL:T({_msg,Element})
 
 			local elementName = Element.name
 	
 	
 			if Element.name == cvn.unit then
 				_msg = string.format("%sLead Element %s", CVNCONTROL.traceTitle, Element.name)
-				BASE:T(_msg)
+				CVNCONTROL:T(_msg)
 	
 				-- add recovery tanker
 				if cvn.tanker then
 					_msg = string.format("%sRecovery Tanker for %s is required", CVNCONTROL.traceTitle, cvn.name)
-					BASE:T(_msg)
+					CVNCONTROL:T(_msg)
 					CVNCONTROL:recoveryTanker(cvn)
 				end
 				-- insert unit ID into DYNDECK group
 				local unit = UNIT:FindByName(cvn.unit)--GROUP:FindByName(cvn.group):GetUnit(1)
 				local unitid = unit:GetID()
 				_msg = string.format("%sUnit object for %s", CVNCONTROL.traceTitle, cvn.unit)
-				BASE:T({_msg, unit})
+				self:T({_msg, unit})
 	
 			end
 	
 		end
 	
 		_msg = string.format("%sNew Navygroup =", self.traceTitle)
-		BASE:T({_msg,cvn.navygroup})
+		self:T({_msg,cvn.navygroup})
 		
 		-- add top menu if not already added
 		if not self.menu.top then
@@ -101,14 +103,14 @@ function CVNCONTROL:Start()
 			-- add command menus for this cvn
 			self.menu[cvn.name][menuId] = MENU_COALITION_COMMAND:New( coalition.side.BLUE, menuText, self.menu[cvn.name], self.start_recovery, CVNCONTROL, cvn, minutes)
 			_msg = string.format("%sAdd command menu for CVN %s window %s minutes.", self.traceTitle, cvn.name, menuId)
-			BASE:T(_msg)
+			self:T(_msg)
 		
 		end
 	
 		-- add command to cancel current recovery window
 		self.menu[cvn.name]["cancel"] = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Cancel current recovery window.", self.menu[cvn.name], self.recoveryCancel, CVNCONTROL, cvn, cruise)
 		_msg = string.format("%sAdd command menu to cancel recovery for CVN %s.", self.traceTitle, cvn.name)
-		BASE:T(_msg)
+		self:T(_msg)
 			
 	end
 
@@ -117,12 +119,12 @@ end
 function CVNCONTROL:start_recovery(cvn, minutes)
 
 	_msg = string.format("%sstart_recovery().", self.traceTitle)
-	BASE:T({_msg,cvn})
+	self:T({_msg,cvn})
 
 
 	if cvn.navygroup:IsSteamingIntoWind() then
 		_msg = string.format("%sCVN %s already steaming into wind.", self.traceTitle, cvn.name)
-		BASE:T(_msg)
+		self:T(_msg)
 
 		local heading = UTILS.Round(cvn.navygroup:GetHeadingIntoWind(), 0)
 		_msg = string.format("%s is currently launching/recovering.\n\nRecovery window closes at time %s\n\nBRC is %d",cvn.name, cvn.timeend, heading)
@@ -131,7 +133,7 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 	else
 
 		_msg = string.format("%sAdd turn into wind for CVN %s.", self.traceTitle, cvn.name)
-		BASE:T(_msg)
+		self:T(_msg)
 
 		local timeNow = timer.getAbsTime()
 		local secondsStart = timeNow + cvn.recoveryDelay
@@ -158,7 +160,7 @@ end
 
 function CVNCONTROL:recoveryCancel(cvn, cruise)
 	_msg = string.format("%sCancel recovery window for CVN %s.", self.traceTitle, cvn.name)
-	BASE:T(_msg)
+	self:T(_msg)
 
 	if cvn.navygroup:IsSteamingIntoWind() then
 
@@ -173,16 +175,16 @@ end
 
 function CVNCONTROL:recoveryTanker(cvn)
 	_msg = string.format("%sAdd Recovery Tanker for CVN %s.", self.traceTitle, cvn.name)
-	BASE:T(_msg)
+	self:T(_msg)
 
 	if cvn.tankertemplate and GROUP:FindByName(cvn.tankertemplate) then
 		_msg = string.format("%sUsing tanker spawn template in MIZ for CVN %s.", self.traceTitle, cvn.name)
-		BASE:T(_msg)
+		self:T(_msg)
 		-- spawn from template in miz
 		cvn.spawntemplate = SPAWN:New(cvn.tankertemplate)
 	else
 		_msg = string.format("%sUsing default tanker spawn template for CVN %s.", self.traceTitle, cvn.name)
-		BASE:T(_msg)
+		self:T(_msg)
 		-- spawn using CVNCONTROL default template
 		local countryId = cvn.countryid or CVNCONTROL.default.countryid
 		local coalition = cvn.coalition or CVNCONTROL.default.coalition
@@ -204,7 +206,7 @@ function CVNCONTROL:recoveryTanker(cvn)
 		function(spawngroup)
 			local spawnGroupName = spawngroup:GetName()
 			_msg = string.format(CVNCONTROL.traceTitle .. "Spawned Group %s", spawnGroupName)
-			BASE:T(_msg)
+			CVNCONTROL:T(_msg)
 
 			cvn.spawntanker = RECOVERYTANKER:New(UNIT:FindByName(cvn.unit), spawnGroupName)
 				:SetCallsign(cvn.tankercallsign, cvn.tankercallsignnumber)
@@ -226,6 +228,7 @@ end
 
 CVNCONTROL.templates = {
 	["S3BTANKER"] = {
+		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
@@ -286,6 +289,24 @@ CVNCONTROL.templates = {
 										}, -- end of ["action"]
 									}, -- end of ["params"]
 								}, -- end of [2]
+								[3] = 
+								{
+									["number"] = 3,
+									["auto"] = false,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "SetInvisible",
+											["params"] = 
+											{
+												["value"] = true,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [3]
 							}, -- end of ["tasks"]
 						}, -- end of ["params"]
 					}, -- end of ["task"]
