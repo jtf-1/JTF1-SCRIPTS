@@ -116,6 +116,31 @@ env.info( "[JTF-1] markspawn" )
 -- Will spawn an SA6 Battery on the location of the map mark, in alert state GREEN and with skill level HIGH.
 -- 
 -- 
+-- Weather Report Syntax
+-- ---------------------
+-- 
+-- CMD WXREPORT: [QFE, METRIC]
+-- 
+-- 
+-- Weather Report Options
+-- ----------------------
+-- 
+-- - QFE   (Pressure displayed as QFE) - default QNH
+-- - METRIC  (Produces the report in Metric format (mp/s, hPa) - default Imperial
+-- 
+-- 
+-- Example
+-- -------
+-- 
+-- CMD WXREPORT:
+-- 
+-- Will report Wind in knots, QNH in inHg, temperature in centigrade at the mark's position
+-- 
+-- CMD WXREPORT: QFE
+-- 
+-- Will report wind in knots, QFE in inHg, temperature in centigrade at the mark's position
+-- 
+-- 
 -- Delete Spawn Syntax
 -- -------------------
 -- 
@@ -1182,13 +1207,21 @@ end
 -----------------
 
 function MARKSPAWN:MLWxReport(repoString, mark)
+	_msg = string.format("%s WXREPORT. repostring = %s", 
+		self.traceTitle,
+		repoString
+	)
+	self:T(_msg)
+
 	local qfe = false
 	local metric = false
 	local options = self:split(repoString, ",")
-	self:T({options})
+	--local pos = mark:GetCoordinate()
+	self:T({options = options, markpos = {mark.pos}})
+
 	for idx, option in pairs (options) do
 		option = option:gsub("%s+", "")
-		self:T(option)
+		self:T({option_sub = option})
 		if(option:upper() == "METRIC") then
 		metric = true
 		elseif(option:upper() == "QFE") then
@@ -1196,15 +1229,25 @@ function MARKSPAWN:MLWxReport(repoString, mark)
 		end
 	end
 	
-	local wxPos = COORDINATE:NewFromVec3(self:MLConvertMarkPos(mark.pos))
-	local heading, windSpeedMPS = wxPos:GetWind(wxPos:GetLandHeight())
-	heading = self:_Heading(heading + 180)
+	local wxPos = COORDINATE:NewFromVec3(mark.pos) -- COORDINATE:NewFromVec3(self:MLConvertMarkPos(mark.pos))
+	local wxLandHeight = wxPos:GetLandHeight()
+	local heading, windSpeedMPS = wxPos:GetWind()
+	
+	_msg = string.format("%s Land Height: %d, Heading: %d, Speed m/s: %4.2f", 
+		self.traceTitle,
+		wxLandHeight,
+		heading,
+		windSpeedMPS
+	)
+	self:T(_msg)
+	
+	--heading = self:_Heading(heading + 180)
 	local windSpeedKnots = UTILS.MpsToKnots(windSpeedMPS)
 	local temperature = wxPos:GetTemperature()
 	
 	local pressure_hPa,pressure_inHg
 	if(qfe) then
-		pressure_hPa = wxPos:GetPressure(wxPos:GetLandHeight())
+		pressure_hPa = wxPos:GetPressure(wxLandHeight)
 	else
 		pressure_hPa = wxPos:GetPressure(0)
 	end
@@ -1217,24 +1260,48 @@ function MARKSPAWN:MLWxReport(repoString, mark)
 		coal = mark.coalition
 	end
 
-	local msg = ""
+	local msgWx = ""
+	local msgWind, msgPressure, msgTemperature
+
+	-- requested in Metric
 	if(metric) then
-		msg = msg .. string.format("Wind is from %3d Degrees at %3d Mps\n",windSpeedMPS,heading)
+		msgWind = string.format("Wind is from %03d Degrees at %.2f Mps",heading, windSpeedMPS)
 		if(qfe) then
-			msg = msg .. string.format("QFE is %4.2f hPa\n", pressure_hPa)
+			msgPressure = string.format("QFE is %4.2f hPa", pressure_hPa)
 		else
-			msg = msg .. string.format("QNH is %4.2f hPa\n", pressure_hPa)
+			msgPressure = string.format("QNH is %4.2f hPa", pressure_hPa)
 		end
+	-- requested in Imperial
 	else
-		msg = msg .. string.format("Wind is from %3d Degrees at %3d Knots\n",windSpeedKnots,heading)
+		msgWind = string.format("Wind is from %03d Degrees at %d Knots",heading, windSpeedKnots)
 		if(qfe) then
-			msg = msg .. string.format("QFE is %4.2f inHg\n", pressure_inHg)
+			msgPressure = string.format("QFE is %4.2f inHg", pressure_inHg)
 		else
-			msg = msg .. string.format("QNH is %4.2f inHg\n", pressure_inHg)
+			msgPressure = string.format("QNH is %4.2f inHg", pressure_inHg)
 		end
 	end
-	msg = msg .. string.format("Temperature is %3d Degrees C", temperature)
-	wxPos:MarkToCoalition(msg,coal,false,nil)
+	
+	msgTemperature = string.format("Temperature is %d Degrees C", temperature)
+
+	msgWx = string.format("%s\n%s\n%s", 
+		msgWind,
+		msgPressure,
+		msgTemperature
+	)
+	wxPos:MarkToCoalition(msgWx,coal,false,nil)
+
+	_msg = string.format("%s%s", 
+		self.traceTitle,
+		(string.gsub(msgWx, "%c", " | "))
+	)
+	self:T(_msg)
+	-- _msg = string.format("%s %s | %s | %s", 
+	-- 	self.traceTitle,
+	-- 	msgWind,
+	-- 	msgPressure,
+	-- 	msgTemperature
+	-- )
+	-- self:T(_msg)
 end
 
 -----------------
@@ -1513,6 +1580,9 @@ function MARKSPAWN:MLConvertMarkPos(pos)
 	local xVal = pos.z
 	newPos.z = zVal
 	newPos.x = xVal
+	_msg = self.traceTitle .. " newPos.z = " .. newPos.z .. " newPos.x = " .. newPos.x
+	self:T(_msg)
+
 	return newPos
 end
 
