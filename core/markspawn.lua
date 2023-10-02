@@ -26,22 +26,22 @@ env.info( "[JTF-1] markspawn" )
 --
 -- COMMANDS
 -- ========
-
+-- 
 -- - ASPAWN: = Spawn Air Group
 -- - GSPAWN: = Spawn Ground Group
 -- - NSPAWN: = Spawn Navy Group
 -- - WXREPORT: = display message with weather conditions
 -- - DELETE: = Delete one, or more, Group(s)
-
+-- 
 -- Airspawn syntax
 -- ---------------
-
+-- 
 -- CMD ASPAWN: [type][, [option]: [value]][...]
-
-
+-- 
+-- 
 -- Airspawn Types
 -- --------------
-
+-- 
 -- - F4
 -- - SU25
 -- - SU27
@@ -53,11 +53,11 @@ env.info( "[JTF-1] markspawn" )
 -- - F16SEAD
 -- - F18SEAD
 -- - OPTIONS	(will list the types available for this command)
-
-
+-- 
+-- 
 -- Airspawn Options
 -- ----------------
-
+-- 
 -- - HDG: [degrees] - default 000
 -- - ALT: [flight level] - default 280 (28,000ft)
 -- - DIST:[nm] - default 0 (spawn on mark point)
@@ -66,25 +66,25 @@ env.info( "[JTF-1] markspawn" )
 -- - SKILL: [AVERAGE, GOOD, HIGH, EXCELLENT, RANDOM] - default AVERAGE
 -- - TASK: [CAP] - default NOTHING
 -- - SIDE: [RED, BLUE, NEUTRAL] - default RED (Russia)
-
-
+-- 
+-- 
 -- Example
 -- -------
-
+-- 
 -- CMD ASPAWN: MIG29, NUM: 2, HDG: 180, SKILL: GOOD
-
+-- 
 -- Will spawn 2x MiG29 at the default speed of 425 knots, with heading 180 and skill level GOOD.
-
-
+-- 
+-- 
 -- Groundspawn Syntax
 -- ------------------
-
+-- 
 -- CMD GSPAWN: [groundspawn type][, [option]: [value]][...]
-
-
+-- 
+-- 
 -- Groundspawn Types
 -- -----------------
-
+-- 
 -- - SA2		(battery)
 -- - SA3		{battery)
 -- - SA6		(battery)
@@ -99,82 +99,82 @@ env.info( "[JTF-1] markspawn" )
 -- - CONLIGHT      (Supply convoy)
 -- - CONHEAVY	(Armoured convoy) 
 -- - OPTIONS	(will list the types available for this command)
-
-
+-- 
+-- 
 -- Groundspawn Options
 -- ----------------
-
+-- 
 -- - ALERT: [GREEN, AUTO, RED] - default RED 
 -- - SKILL: [AVERAGE, GOOD, HIGH, EXCELLENT, RANDOM] - default AVERAGE
-
-
+-- 
+-- 
 -- Example
 -- -------
-
+-- 
 -- CMD GSPAWN: SA6, ALERT: GREEN, SKILL: HIGH
-
+-- 
 -- Will spawn an SA6 Battery on the location of the map mark, in alert state GREEN and with skill level HIGH.
-
-
+-- 
+-- 
 -- Delete Spawn Syntax
 -- -------------------
-
+-- 
 -- CMD DELETE: [object] [object option[s]]
-
-
+-- 
+-- 
 -- Delete Spawn Objects
 -- --------------------
-
+-- 
 -- - GROUP [requires name of Command Spawned Group in F10 map]
 -- - KIND [requires option CAT and/or TYPE and/or ROLE] [SIDE]
 -- - AREA  [Zone radius defined by RAD option] [CAT, TYPE, ROLE, SIDE]
 -- - NEAREST [CAT, TYPE, ROLE, SIDE]
 -- - ALL
-
-
+-- 
+-- 
 -- Delete Spawn Options
 -- --------------------
-
+-- 
 -- - CAT: [AIR, GROUND] - default ALL
 -- - TYPE: [the spawned object Type] - default ALL
 -- - ROLE: [CAS, SEAD, SAM, AAA, CVY] - default ALL
 -- - SIDE: [RED, BLUE, NEUTRAL, ALL] - default RED
 -- - RAD: [radius from mark in NM] - default 5NM
-
-
+-- 
+-- 
 -- Example
 -- -------
-
+-- 
 -- CMD DELETE: GROUP MIG29#001 
-
+-- 
 -- - Will remove the spawned group named MIG29#001
-
+-- 
 -- CMD DELETE: KIND TYPE: SA15
-
+-- 
 -- - will remove all SA15 groups
-
+-- 
 -- CMD DELETE: KIND ROLE: SAM
-
+-- 
 -- - will remove all groups with the SAM role
-
+-- 
 -- CMD DELETE: AREA TYPE: SA8
-
+-- 
 -- - will remove all SA8 groups within 5NM of mark
-
+-- 
 -- CMD DELETE: AREA RAD: 1 ROLE: SAM SIDE: ALL
-
+-- 
 -- - will remove all groups within 5NM of the mark, with the SAM role, on Red, Blue and Neutral sides 
-
-
+-- 
+-- 
 -- Cut-n-Paste Command Examples
 -- ----------------------------
-
+-- 
 -- CMD GSPAWN: SA8, ALERT: RED, SKILL: HIGH
-
+-- 
 -- CMD GSPAWN: SA15, ALERT: RED, SKILL: HIGH
-
+-- 
 -- CMD ASPAWN: MIG29, NUM: 2, HDG: 90, SKILL: GOOD, ALT: 280, TASK: CAP, SIDE: RED
-
+--
 -- CMD DELETE: GROUP MIG29A#001
 --
 -- TASK TYPES
