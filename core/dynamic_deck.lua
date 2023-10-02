@@ -23,15 +23,18 @@ env.info( "[JTF-1] dynamic_deck_population" )
 --
 
 DYNDECK = DYNDECK or {}
+-- inherit methods,  properties etc from BASE for event handler, trace etc
+DYNDECK = BASE:Inherit( DYNDECK, BASE:New() )
+DYNDECK.ClassName = "DYNDECK"
+DYNDECK.traceTitle = "[JTF-1] "
 
 DYNDECK.menu = {}
 DYNDECK.templates = {}
-DYNDECK.traceTitle = "[JTF-1 DYNDECK] "
 
 -- Function to parse through DYNDECK.ship and add menu items
 function DYNDECK:Start()
 
-    BASE:T("[JTF-1 DYNDECK] Add template menus to mission.")
+    self:T("[JTF-1 DYNDECK] Add template menus to mission.")
     
     local menu_root
 
@@ -54,7 +57,7 @@ function DYNDECK:Start()
             local unit = UNIT:FindByName(menuship.unit)
             local unitId = unit:GetID()
             _msg = self.traceTitle .. "Group ID = " .. unitId
-            BASE:T(_msg)
+            self:T(_msg)
             menuship.id = tonumber(unitId)
         end
   
@@ -79,17 +82,17 @@ function DYNDECK:Start()
         for templateIndex, template in ipairs(menuship.templates) do
  
             if template.group == "" then -- this is a complete template and should be placed in the Complete Templates submenu
-                BASE:T("[JTF-1 DYNDECK] Add Full Template: " .. template.name)
+                self:T("[JTF-1 DYNDECK] Add Full Template: " .. template.name)
   
                 -- add command to ship root menu for full template 
                 MENU_MISSION_COMMAND:New(template.menutext, DYNDECK.menu[menuship.id].complete, DYNDECK.applyTemplate, self, template.name, menuship.id, menuship.coalitionID, false, shipIndex ,templateIndex)
 
             else -- this is a partial template and should be placed in the Partial Templates submenu
-                BASE:T("[JTF-1 DYNDECK] Add partial template.")
+                self:T("[JTF-1 DYNDECK] Add partial template.")
 
                 -- add submenu for group if it doesn't already exist
                 if not DYNDECK.menu[menuship.id].partial[template.group] then
-                    BASE:T("[JTF-1 DYNDECK] Add Group submenu: " .. template.group)
+                    self:T("[JTF-1 DYNDECK] Add Group submenu: " .. template.group)
  
                     DYNDECK.menu[menuship.id].partial[template.group] = MENU_MISSION:New(template.group, DYNDECK.menu[menuship.id].partial) -- add group submenu
                     DYNDECK.menu[menuship.id].partial[template.group].templates = {} -- container for grouped template submenus
@@ -97,7 +100,7 @@ function DYNDECK:Start()
                 end
  
                 if not DYNDECK.menu[menuship.id].partial[template.group].templates[template.name] then -- check template entry isn't a duplicate
-                    BASE:T("[JTF-1 DYNDECK] Add template submenu: " .. template.name)
+                    self:T("[JTF-1 DYNDECK] Add template submenu: " .. template.name)
 
                     -- add a submenu for the group template
                     DYNDECK.menu[menuship.id].partial[template.group].templates[template.name] = MENU_MISSION:New(template.menutext, DYNDECK.menu[menuship.id].partial[template.group])
@@ -109,7 +112,7 @@ function DYNDECK:Start()
                     MENU_MISSION_COMMAND:New("Remove", DYNDECK.menu[menuship.id].partial[template.group].templates[template.name], DYNDECK.clearDeck, self, template.name, menuship.id, menuship.coalitionID, shipIndex ,templateIndex)  
 
                 else
-                    BASE:T("[JTF-1 DYNDECK] ERROR! Menu has already been added for template: " .. template.name)
+                    self:T("[JTF-1 DYNDECK] ERROR! Menu has already been added for template: " .. template.name)
                 end
  
             end
@@ -125,7 +128,7 @@ end
 
 -- Function to remove templates from the deck
 function DYNDECK:clearDeck(templateName, shipID, coalitionID, shipIndex, templateIndex)
-    BASE:T("[JTF-1 DYNDECK] clearDeck called.")
+    self:T("[JTF-1 DYNDECK] clearDeck called.")
 
     local staticFind = templateName or ("dyndeck_" .. shipID) -- search string for identifying objects to remove
     local statObj = coalition.getStaticObjects(coalitionID) -- table of all static objects for coalition
@@ -154,21 +157,21 @@ end
 
 -- Function to Apply the selected template to the ship
 function DYNDECK:applyTemplate(templateName, shipID, coalitionID, noClear, shipIndex, templateIndex)
-    BASE:T("[JTF-1 DYNDECK] applyTemplate called.")
+    self:T("[JTF-1 DYNDECK] applyTemplate called.")
  
     if DYNDECK[templateName] then -- check called template exists!
         -- only apply the template if it is *not* already active
  
         if not DYNDECK.ship[shipIndex].templates[templateIndex].active then
-            BASE:T("[JTF-1 DYNDECK] Template not active.")
+            self:T("[JTF-1 DYNDECK] Template not active.")
  
             if DYNDECK.ship[shipIndex].fullTemplateActive or (not noClear) then -- a full template is being, or has already been, applied
-                BASE:T("[JTF-1 DYNDECK] Clear Deck.")
+                self:T("[JTF-1 DYNDECK] Clear Deck.")
                 -- clear deck before applying template
                 DYNDECK:clearDeck(false, shipID, coalitionID, shipIndex)
             end
  
-            BASE:T("[JTF-1 DYNDECK] Apply template: " .. templateName)
+            self:T("[JTF-1 DYNDECK] Apply template: " .. templateName)
             -- call function for the template
             DYNDECK[templateName](shipID, templateName)
             -- mark the template as active
@@ -179,12 +182,12 @@ function DYNDECK:applyTemplate(templateName, shipID, coalitionID, noClear, shipI
                 DYNDECK.ship[shipIndex].fullTemplateActive = true
             end
         else
-            BASE:T("[JTF-1 DYNDECK] TEMPLATE ALREADY ACTIVE!")
+            self:T("[JTF-1 DYNDECK] TEMPLATE ALREADY ACTIVE!")
         end
  
     else -- if template does not exist
         _msg = "[JTF-1 DYNDECK] ERROR! REQUESTED SHIP TEMPLATE NOT FOUND: " .. templateName
-        BASE:T(_msg)
+        self:T(_msg)
         MESSAGE:New(_msg):ToAll()
     end
 end
