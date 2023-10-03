@@ -29,6 +29,7 @@ if not MARKSPAWN then
 end
 
 MARKSPAWN.templates = {
+	------------------------ BVR ------------------------
 	["BVR_MIG23"] = {
 		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
@@ -1327,6 +1328,7 @@ MARKSPAWN.templates = {
 		["modulation"] = 0,
 		["frequency"] = 305,
 	},	 -- end of ["BVR_F18"]
+    ------------------------ SEAD ------------------------
 	["SEAD_F16"] = {
 		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
@@ -1915,6 +1917,7 @@ MARKSPAWN.templates = {
 		["modulation"] = 0,
 		["frequency"] = 305,
 	}, -- end of ["SEAD_F18"]
+	------------------------ SAM ------------------------
 	["SA2"] = {
 		["category"] = Group.Category.GROUND,
 		["visible"] = false,
@@ -3497,6 +3500,7 @@ MARKSPAWN.templates = {
 		["name"] = "SA19",
 		["start_time"] = 0,
 	},  -- end of ["SA19"]
+	------------------------ AAA ------------------------
 	["ZSU23_Shilka"] = {
 		["category"] = Group.Category.GROUND,
 		["visible"] = false,
@@ -3930,6 +3934,7 @@ MARKSPAWN.templates = {
 		["name"] = "AAA_Zu23Closed",
 		["start_time"] = 0,
 	}, -- end of [ZU23CLOSED]	
+	------------------------ CONVOY ------------------------
 	["CON_light"] = {
 		["category"] = Group.Category.GROUND,
 		["visible"] = false,
