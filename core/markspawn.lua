@@ -261,13 +261,14 @@ MARKSPAWN.spawnTypes = { -- types available for spawning
     { template = "SA11",   		msType = "SA11", 		category = "ground",  role = "SAM"},
     { template = "SA15",   		msType = "SA15", 		category = "ground",  role = "SAM"},
     { template = "SA19",   		msType = "SA19", 		category = "ground",  role = "SAM"},
+	------------------------ AAA ------------------------
     { template = "ZSU23_Shilka",msType = "ZSU23",		category = "ground",  role = "AAA"},
     { template = "ZU23_Emp",	msType = "ZU23EMP",		category = "ground",  role = "AAA"},
     { template = "ZU23_Ural",	msType = "ZU23URAL",	category = "ground",  role = "AAA"},
-	------------------------ ARTILLERY ------------------------
 	------------------------ CONVOY ------------------------
     { template = "CON_light",	msType = "CONLIGHT",	category = "ground",  role = "CON"},
     { template = "CON_heavy",	msType = "CONHEAVY",	category = "ground",  role = "CON"},
+	------------------------ ARTILLERY ------------------------
 	------------------------ INFANTRY ------------------------
 	------------------------ SHIP ------------------------
 }
