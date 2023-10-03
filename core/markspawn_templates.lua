@@ -1,4 +1,4 @@
-env.info( "[JTF-1] markspawn_data" )
+env.info( "[JTF-1] markspawn_templates" )
 --------------------------------------------
 --- Mark Spawn Spawn Templates Defined in this file
 --------------------------------------------
