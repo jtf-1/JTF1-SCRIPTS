@@ -452,8 +452,9 @@ SUPPORTAC.missionDefault = {
 	despawn = true, -- default deSpawn option. if false or nil the aircraft will fly to hom base on RTB
 } -- end SUPPORTAC.missionDefault
 
+-- TEMPLATES DEFINED IN SUPPORTAIRCRAFT_TEMPLATES.LUA
 -- pre-defined spawn templates to be used as an alternative to placing late activated templates in the miz
-SUPPORTAC.template = {
+--[[ SUPPORTAC.template = {
 	["KC-135"] = {
 		["category"] = Group.Category.AIRPLANE,
 		["lateActivation"] = true,
@@ -1476,5 +1477,6 @@ SUPPORTAC.template = {
 		["frequency"] = 251,
 	}, -- end of ["S3BTANKER"]
 } -- end SUPPORTAC.template
+-- ]]
 
 -- END SUPPORT AIRCRAFT SECTION
