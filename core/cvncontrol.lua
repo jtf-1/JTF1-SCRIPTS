@@ -7,8 +7,16 @@ CVNCONTROL = {}
 CVNCONTROL = BASE:Inherit( CVNCONTROL, BASE:New() )
 CVNCONTROL.ClassName = "CVNCONTROL"
 CVNCONTROL.traceTitle = "[JTF-1] "
+CVNCONTROL.version = "1.0"
 
 CVNCONTROL.menu = {}
+
+CVNCONTROL.enums = {
+	setlightsauto = 1, -- auto
+	setlightslaunch = 2, -- launch
+	setlightsrecovery = 3, -- recovery
+	setlightsnav = 4, -- nav
+}
 
 CVNCONTROL.default = {
 	recoverywindow = {15, 30, 60, 90},
@@ -17,7 +25,9 @@ CVNCONTROL.default = {
 	countryid = country.id.USA, -- default country to be used for predfined templates
 	coalition = coalition.side.BLUE, -- default coalition to use for predefined templates
 	groupcategory = Group.Category.AIRPLANE, -- default group category to use for predefined templates
-	recoverydelay = 0 -- time, in seconds, for which to delay the commencement of the launch/recovery window
+	recoverydelay = 0, -- time, in seconds, for which to delay the commencement of the launch/recovery window
+	flagsetlights = 6666, -- mission trigger flag for setting carrier lights (0 = NAV, 1 = Launch, 2 = Recovery)
+	setlightsdefault = CVNCONTROL.enums.setlightsauto, -- default light mode for carrier
 }
 
 function CVNCONTROL:Start()
@@ -31,6 +41,7 @@ function CVNCONTROL:Start()
 		cvn.cruise = cvn.cruise or self.default.cruise
 		cvn.recoveryWindow = cvn.recoveryWindow or self.default.recoverywindow
 		cvn.recoveryDelay = cvn.recoveryDelay or self.default.recoverydelay
+		cvn.flagsetlights = cvn.flagsetlights or self.default.flagsetlights
 		--local tacan = cvn.tacan
 		
 		cvn.navygroup = NAVYGROUP:New(GROUP:FindByName(cvn.group)) -- cvn.navygroup
@@ -106,7 +117,13 @@ function CVNCONTROL:Start()
 			self:T(_msg)
 		
 		end
-	
+		
+		self.menu[cvn.name]["lights"] = MENU_COALITION:New(coalition.side.BLUE, "Change Lights", self.menu[cvn.name])
+		-- add commands to set carrier lights mode
+		self.menu[cvn.name]["recovery"] = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Recovery mode", self.menu[cvn.name]["lights"], self.setLights, CVNCONTROL, cvn, self.enums.setlightsrecovery)
+		self.menu[cvn.name]["launch"] = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Launch mode", self.menu[cvn.name]["lights"], self.setLights, CVNCONTROL, cvn, self.enums.setlightslaunch)
+
+
 		-- add command to cancel current recovery window
 		self.menu[cvn.name]["cancel"] = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Cancel current recovery window.", self.menu[cvn.name], self.recoveryCancel, CVNCONTROL, cvn, cruise)
 		_msg = string.format("%sAdd command menu to cancel recovery for CVN %s.", self.traceTitle, cvn.name)
@@ -121,7 +138,8 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 	_msg = string.format("%sstart_recovery().", self.traceTitle)
 	self:T({_msg,cvn})
 
-
+	self:setLights(cvn, self.enums.setlightsrecovery)
+	
 	if cvn.navygroup:IsSteamingIntoWind() then
 		_msg = string.format("%sCVN %s already steaming into wind.", self.traceTitle, cvn.name)
 		self:T(_msg)
@@ -135,10 +153,11 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 		_msg = string.format("%sAdd turn into wind for CVN %s.", self.traceTitle, cvn.name)
 		self:T(_msg)
 
+		local durationSeconds = minutes * 60
 		local timeNow = timer.getAbsTime()
 		local secondsStart = timeNow + cvn.recoveryDelay
 		local timeStart = UTILS.SecondsToClock(secondsStart,true)
-		local secondsEnd = secondsStart + (minutes * 60)
+		local secondsEnd = secondsStart + durationSeconds
 		local timeEnd = UTILS.SecondsToClock(secondsEnd,true)
 		local windDir = UTILS.Round(cvn.navygroup:GetWind(),0)
 		local deckOffSet = cvn.deckoffset
@@ -151,7 +170,7 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 		_msg =string.format("%s is turning for recovery.\n\nRecovery Window is open from %s until %s.\n\nWind is at %d", cvn.name, timeStart, timeEnd, windDir)
 		Message_01 = MESSAGE:New(_msg, 10):ToBlue()
 
-		cvn.navygroup:AddTurnIntoWind(nil, timeEnd , recoverySpeed, uturn, deckOffSet)
+		cvn.navygroup:AddTurnIntoWind(nil, durationSeconds , recoverySpeed, uturn, deckOffSet)
 		cvn.timeend = timeEnd
 
 	end 
@@ -164,6 +183,8 @@ function CVNCONTROL:recoveryCancel(cvn, cruise)
 
 	if cvn.navygroup:IsSteamingIntoWind() then
 
+		self:setLights(cvn, self.enums.setlightsnav)
+
 		cvn.navygroup:TurnIntoWindStop()
 		--cvn.navygroup:SetSpeed(cruise)
 	
@@ -173,8 +194,26 @@ function CVNCONTROL:recoveryCancel(cvn, cruise)
 
 end
 
+function CVNCONTROL:setLights(cvn, mode)
+	_msg = string.format("%sSet lights to mode %d for CVN %s.", 
+		self.traceTitle, 
+		mode, 
+		cvn.name
+	)
+	self:T(_msg)
+
+	-- set mode to default if not defined
+	mode = mode or CVNCONTROL.default.setlightsdefault
+	-- set mission trigger flag to mode
+	trigger.action.setUserFlag(cvn.flagsetlights, mode)
+
+end
+
 function CVNCONTROL:recoveryTanker(cvn)
-	_msg = string.format("%sAdd Recovery Tanker for CVN %s.", self.traceTitle, cvn.name)
+	_msg = string.format("%sAdd Recovery Tanker for CVN %s.", 
+		self.traceTitle, 
+		cvn.name
+	)
 	self:T(_msg)
 
 	if cvn.tankertemplate and GROUP:FindByName(cvn.tankertemplate) then
