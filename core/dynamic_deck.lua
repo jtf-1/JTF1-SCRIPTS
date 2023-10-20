@@ -27,6 +27,7 @@ DYNDECK = DYNDECK or {}
 DYNDECK = BASE:Inherit( DYNDECK, BASE:New() )
 DYNDECK.ClassName = "DYNDECK"
 DYNDECK.traceTitle = "[JTF-1] "
+DYNDECK.version = "1.0"
 
 DYNDECK.menu = {}
 DYNDECK.templates = {}
