@@ -23,7 +23,7 @@ env.info( "[JTF-1] markspawn_templates" )
 -- Error prevention. Create empty container if SUPPORTAIRCRAFT.LUA is not loaded or has failed.
 if not MARKSPAWN then 
 	MARKSPAWN = {}
-	SUPPORTAC.traceTitle = "[JTF-1 MARKSPAWN] "
+	MARKSPAWN.traceTitle = "[JTF-1 MARKSPAWN] "
 	_msg = MARKSPAWN.traceTitle .. "CORE FILE NOT LOADED!"
 	BASE:E(_msg)
 end
@@ -4618,6 +4618,9 @@ MARKSPAWN.templates = {
 		["name"] = "CONVOY_heavy-2",
 		["start_time"] = 0,
 	},  -- end of ["CON_heavy"]
+	------------------------ ARTILLERY ------------------------
+	------------------------ INFANTRY ------------------------
+	------------------------ SHIP ------------------------
 }
 
 
