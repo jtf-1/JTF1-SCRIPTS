@@ -213,7 +213,7 @@ MARKSPAWN = {}
 MARKSPAWN = BASE:Inherit( MARKSPAWN, BASE:New() )
 
 MARKSPAWN.traceTitle = "[JTF-1] "
-MARKSPAWN.version = "0.2"
+MARKSPAWN.version = "1.0"
 MARKSPAWN.ClassName = "MARKSPAWN"
 
 --MARKSPAWN.MLTgtArray = {}
