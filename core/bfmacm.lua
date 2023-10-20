@@ -5,6 +5,8 @@ env.info( "[JTF-1] bfmacm" )
 
 BFMACM = {
 	ClassName = "BFMACM",
+	version = "1.0",
+	traceTitle = "[JTF-1] ",
 	menuAdded = {},
 	menuF10 = {},
 	useSRS = true,
