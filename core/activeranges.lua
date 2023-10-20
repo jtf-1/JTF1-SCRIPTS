@@ -24,6 +24,11 @@ env.info( "[JTF-1] activeranges.lua" )
 
 ACTIVERANGES = {}
 
+ACTIVERANGES.traceTitle = "[JTF-1] "
+ACTIVERANGES.version = "0.1"
+ACTIVERANGES.ClassName = "ACTIVERANGES"
+
+
 ACTIVERANGES.default = {
   rangeRadio = "377.8",
   useSRS = true,
