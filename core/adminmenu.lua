@@ -21,6 +21,7 @@ env.info( "[JTF-1] adminmenu.lua" )
 ADMIN = {
 	ClassName = "ADMIN",
 	traceTitle = "[JTF-1] ",
+	version = "0.1",
 	menuAllSlots = false, -- Set to true for admin menu to appear in all player slots
 	defaultMissionRestart = "MISSION_RESTART",
 	defaultMissionLoad = "MISSION_LOAD",
