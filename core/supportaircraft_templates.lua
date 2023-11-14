@@ -33,7 +33,7 @@ SUPPORTAC.template = {
 		["tasks"] = 
 		{
 		}, -- end of ["tasks"]
-		["radioSet"] = true,
+		["radioSet"] = false,
 		["task"] = "Refueling",
 		["uncontrolled"] = false,
 		["route"] = 
@@ -43,10 +43,10 @@ SUPPORTAC.template = {
 			{
 				[1] = 
 				{
-					["alt"] = 6096,
-					["action"] = "Fly Over Point",
+					["alt"] = 2000,
+					["action"] = "Turning Point",
 					["alt_type"] = "BARO",
-					["speed"] = 164.44444444444,
+					["speed"] = 220.97222222222,
 					["task"] = 
 					{
 						["id"] = "ComboTask",
@@ -57,45 +57,27 @@ SUPPORTAC.template = {
 								[1] = 
 								{
 									["enabled"] = true,
-									["auto"] = true,
-									["id"] = "Tanker",
+									["auto"] = false,
+									["id"] = "WrappedAction",
 									["number"] = 1,
 									["params"] = 
 									{
+										["action"] = 
+										{
+											["id"] = "SetUnlimitedFuel",
+											["params"] = 
+											{
+												["value"] = true,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
 									}, -- end of ["params"]
 								}, -- end of [1]
 								[2] = 
 								{
 									["enabled"] = true,
-									["auto"] = true,
-									["id"] = "WrappedAction",
-									["number"] = 2,
-									["params"] = 
-									{
-										["action"] = 
-										{
-											["id"] = "ActivateBeacon",
-											["params"] = 
-											{
-												["type"] = 4,
-												["AA"] = false,
-												["callsign"] = "RTB",
-												["modeChannel"] = "Y",
-												["channel"] = 60,
-												["system"] = 5,
-												["unitId"] = 20564,
-												["bearing"] = true,
-												["frequency"] = 1147000000,
-											}, -- end of ["params"]
-										}, -- end of ["action"]
-									}, -- end of ["params"]
-								}, -- end of [2]
-								[3] = 
-								{
-									["number"] = 3,
 									["auto"] = false,
 									["id"] = "WrappedAction",
-									["enabled"] = true,
+									["number"] = 2,
 									["params"] = 
 									{
 										["action"] = 
@@ -107,37 +89,71 @@ SUPPORTAC.template = {
 											}, -- end of ["params"]
 										}, -- end of ["action"]
 									}, -- end of ["params"]
+								}, -- end of [2]
+								[3] = 
+								{
+									["number"] = 3,
+									["auto"] = true,
+									["id"] = "Tanker",
+									["enabled"] = true,
+									["params"] = 
+									{
+									}, -- end of ["params"]
 								}, -- end of [3]
 								[4] = 
 								{
 									["number"] = 4,
-									["auto"] = false,
+									["auto"] = true,
 									["id"] = "WrappedAction",
 									["enabled"] = true,
 									["params"] = 
 									{
 										["action"] = 
 										{
-											["id"] = "Option",
+											["id"] = "ActivateBeacon",
 											["params"] = 
 											{
-												["value"] = true,
-												["name"] = 6,
+												["type"] = 4,
+												["AA"] = false,
+												["callsign"] = "TKR",
+												["system"] = 4,
+												["channel"] = 1,
+												["modeChannel"] = "X",
+												["bearing"] = true,
+												["frequency"] = 962000000,
 											}, -- end of ["params"]
 										}, -- end of ["action"]
 									}, -- end of ["params"]
 								}, -- end of [4]
+								[5] = 
+								{
+									["number"] = 5,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "EPLRS",
+											["params"] = 
+											{
+												["value"] = true,
+												["groupId"] = 1,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [5]
 							}, -- end of ["tasks"]
 						}, -- end of ["params"]
 					}, -- end of ["task"]
 					["type"] = "Turning Point",
 					["ETA"] = 0,
 					["ETA_locked"] = true,
-					["y"] = -88072.492518417,
-					["x"] = -129287.90747937,
-					["name"] = "",
-					["formation_template"] = "",
+					["y"] = -8563.6832781353,
+					["x"] = -395281.46534495,
 					["speed_locked"] = true,
+					["formation_template"] = "",
 				}, -- end of [1]
 			}, -- end of ["points"]
 		}, -- end of ["route"]
@@ -147,17 +163,24 @@ SUPPORTAC.template = {
 		{
 			[1] = 
 			{
-				["alt"] = 6096,
+				["alt"] = 2000,
 				["alt_type"] = "BARO",
-				["livery_id"] = "standard usaf",
-				["skill"] = "Excellent",
-				["speed"] = 164.44444444444,
+				["livery_id"] = "Standard USAF",
+				["skill"] = "High",
+				["speed"] = 220.97222222222,
+				["AddPropAircraft"] = 
+				{
+					["VoiceCallsignLabel"] = "TO",
+					["VoiceCallsignNumber"] = "11",
+					["STN_L16"] = "07101",
+				}, -- end of ["AddPropAircraft"]
 				["type"] = "KC-135",
 				["unitId"] = 1,
-				["psi"] = 1.0956711527151,
-				["y"] = -88072.492518417,
-				["x"] = -129287.90747937,
-				["name"] = "KC-135",
+				["psi"] = 0,
+				["onboard_num"] = "010",
+				["y"] = -8563.6832781353,
+				["x"] = -395281.46534495,
+				["name"] = "KC-135-1",
 				["payload"] = 
 				{
 					["pylons"] = 
@@ -168,7 +191,7 @@ SUPPORTAC.template = {
 					["chaff"] = 0,
 					["gun"] = 100,
 				}, -- end of ["payload"]
-				["heading"] = -1.0960185021449,
+				["heading"] = 0,
 				["callsign"] = 
 				{
 					[1] = 1,
@@ -176,11 +199,10 @@ SUPPORTAC.template = {
 					["name"] = "Texaco11",
 					[3] = 1,
 				}, -- end of ["callsign"]
-				["onboard_num"] = "088",
 			}, -- end of [1]
 		}, -- end of ["units"]
-		["y"] = -88072.492518417,
-		["x"] = -129287.90747937,
+		["y"] = -8563.6832781353,
+		["x"] = -395281.46534495,
 		["name"] = "KC-135",
 		["communication"] = true,
 		["start_time"] = 0,
