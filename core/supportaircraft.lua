@@ -86,7 +86,7 @@ function SUPPORTAC:Start()
 			self:T(_msg)
 			_msg = string.format(self.traceTitle .. "start - Mission %s set to use %s as home base.", mission.name, missionHomeAirbase)
 			SUPPORTAC:T(_msg)
-		if missionHomeAirbase then -- CHECK HOME AIRBASE
+			if missionHomeAirbase then -- CHECK HOME AIRBASE
 				_msg = string.format(self.traceTitle .. "start - Mission %s using %s as home base.", mission.name, missionHomeAirbase)
 				SUPPORTAC:T(_msg)
 
@@ -109,6 +109,7 @@ function SUPPORTAC:Start()
 				if spawnAngle > 360 then 
 					spawnAngle = spawnHeading - 180
 				end
+				local spawnUnlimitedFuel = mission.unlimitedFuel or SUPPORTAC.missionDefault.unlimitedFuel
 
 				-- coordinate used for the AUFTRAG
 				local missionCoordinate = missionZone:GetCoordinate()
@@ -138,6 +139,11 @@ function SUPPORTAC:Start()
 					-- get template to use for spawn
 					local spawnTemplate = SUPPORTAC.template[missionSpawnType]
 
+					-- check "category" has been set in template
+					-- if not spawnTemplate["category"] then
+					-- 	spawnTemplate["category"] = Group.Category.AIRPLANE
+					-- end
+					
 					-- apply mission callsign to template (for correct display in F10 map)
 					local missionCallsignId = mission.callsign
 					local missionCallsignNumber = mission.callsignNumber or 1
@@ -206,6 +212,7 @@ function SUPPORTAC:Start()
 							_msg = string.format(SUPPORTAC.traceTitle .. "Spawned Group %s", spawnGroupName)
 							BASE:T(_msg)
 		
+							spawngroup:CommandSetUnlimitedFuel(spawnUnlimitedFuel)
 							spawngroup:CommandSetCallsign(mission.callsign, mission.callsignNumber) -- set the template callsign
 						end
 						,mission
@@ -444,6 +451,7 @@ SUPPORTAC.missionDefault = {
 	awacsLeg = 70, -- default awacs racetrack leg length
 	activateDelay = 10, -- delay, in seconds, after the previous ac has despawned before the new ac will be activated 
 	despawnDelay = 30, -- delay, in seconds, before the old ac will be despawned
+	unlimitedFuel = true, -- default unlimited fuel. Set to false in data if fuel RTB is desired
 	fuelLowThreshold = 30, -- default % fuel low level to trigger RTB
 	spawnDistance = 1, -- default distance in NM from the mission zone at which to spawn aircraft
 	countryid = country.id.USA, -- default country to be used for predfined templates
