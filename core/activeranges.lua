@@ -47,7 +47,7 @@ function ACTIVERANGES:Start()
 	self.SetInitActiveRangeGroups = SET_GROUP:New():FilterPrefixes("ACTIVE_"):FilterOnce() -- create list of group objects with prefix "ACTIVE_"
 	self.SetInitActiveRangeGroups:ForEachGroup(
 	function(group)
-		ACTIVERANGES:initActiveRange(group, false)
+		ACTIVERANGES:initActiveRange(group, false) -- [group] group object for target, [true/false] refresh or create
 	end
 	)
 end
@@ -57,25 +57,28 @@ end
 -- @param #table rangeTemplateGroup Target spawn template GROUP object
 -- @param #string refreshRange If false, turn off target AI and add menu option to activate the target
 function ACTIVERANGES:initActiveRange(rangeTemplateGroup, refreshRange)
+	local initGroupName = rangeTemplateGroup:GetName()
 	_msg = "[JTF-1 ACTIVERANGES] initActiveRange()."
-	BASE:T({_msg, rangeTemplateGroup, refreshRange})
+	BASE:T({_msg, initGroupName, refreshRange})
 	local rangeTemplate = rangeTemplateGroup.GroupName
 	local activeRange = SPAWN:New(rangeTemplate)
-	if refreshRange == false then -- turn off AI if initial
-	activeRange:InitAIOnOff(false)
+	if refreshRange == false then 
+		activeRange:InitAIOnOff(false) -- turn off AI if we're not resfreshing an already active target
 	end
 	activeRange:OnSpawnGroup(
-	function (spawnGroup)
-		local rangeName = spawnGroup.GroupName
-		local rangePrefix = string.sub(rangeName, 8, 12) 
-		if refreshRange == false then
-		ACTIVERANGES:addActiveRangeMenu(spawnGroup, rangePrefix)
+		function (spawnGroup)
+			local rangeName = spawnGroup:GetName()
+			local rangePrefix = string.sub(rangeName, 8, 12)
+			if refreshRange == false then
+				ACTIVERANGES:addActiveRangeMenu(spawnGroup, rangePrefix)
+			end
 		end
-	end
-	, refreshRange 
+		, refreshRange 
 	)
-	activeRange:Spawn()
-	local rangeGroup = activeRange:GetLastAliveGroup()
+
+	local rangeGroup = activeRange:Spawn()
+
+	--local rangeGroup = activeRange:GetLastAliveGroup()
 	rangeGroup:OptionROE(ENUMS.ROE.WeaponHold)
 	rangeGroup:OptionROTEvadeFire()
 	rangeGroup:OptionAlarmStateGreen()
