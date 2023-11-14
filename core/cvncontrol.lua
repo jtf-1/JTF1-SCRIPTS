@@ -58,7 +58,7 @@ function CVNCONTROL:Start()
 
 		-- if trace is on, draw the zone on the map
 		if BASE:IsTrace() then 
-			_msg = string.format("Add waypoint marks for group %s", cvn.name)
+			local _msg = string.format("Add waypoint marks for group %s", cvn.name)
 			CVNCONTROL:T(_msg)
 			-- draw waypoints on map
 			cvn.navygroup:MarkWaypoints()
@@ -66,14 +66,14 @@ function CVNCONTROL:Start()
 
 		-- add recovery tanker if cvn.recoverytanker is true
 		function cvn.navygroup:OnAfterElementSpawned(From, Event, To, Element)
-			_msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
+			local _msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
 			CVNCONTROL:T({_msg,Element})
 
 			local elementName = Element.name
 	
 	
 			if Element.name == cvn.unit then
-				_msg = string.format("%sLead Element %s", CVNCONTROL.traceTitle, Element.name)
+				local _msg = string.format("%sLead Element %s", CVNCONTROL.traceTitle, Element.name)
 				CVNCONTROL:T(_msg)
 	
 				-- add recovery tanker
@@ -86,13 +86,37 @@ function CVNCONTROL:Start()
 				local unit = UNIT:FindByName(cvn.unit)--GROUP:FindByName(cvn.group):GetUnit(1)
 				local unitid = unit:GetID()
 				_msg = string.format("%sUnit object for %s", CVNCONTROL.traceTitle, cvn.unit)
-				self:T({_msg, unit})
+				CVNCONTROL:T({_msg, unit})
 	
 			end
 	
 		end
 	
-		_msg = string.format("%sNew Navygroup =", self.traceTitle)
+		function cvn.navygroup:OnAfterTurnIntoWind(From, Event, To, TurnIntoWind)
+
+			local _msg=string.format("%s is turning into wind for Recovery/Launch. BRC will be %d, WOD will be %d knots.", 
+				cvn.name,
+				cvn.brc,
+				cvn.recoveryspeed
+			)
+			CVNCONTROL:T(_msg)
+			MESSAGE:New(_msg, 5):ToBlue()
+
+		end
+
+		function cvn.navygroup:OnAfterCruise(From, Event, To, Speed)
+			
+			local _msg = string.format("%s is returning to Cruise.",
+				cvn.name
+			)
+			CVNCONTROL:T(_msg)
+			MESSAGE:New(_msg, 5):ToBlue()
+
+			--cvn.navygroup:SetSpeed(cvn.cruise, true)
+
+		end
+
+		local _msg = string.format("%sNew Navygroup =", self.traceTitle)
 		self:T({_msg,cvn.navygroup})
 		
 		-- add top menu if not already added
@@ -141,16 +165,31 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 	self:setLights(cvn, self.enums.setlightsrecovery)
 	
 	if cvn.navygroup:IsSteamingIntoWind() then
-		_msg = string.format("%sCVN %s already steaming into wind.", self.traceTitle, cvn.name)
+		_msg = string.format("%sCVN %s already steaming into wind.", 
+			self.traceTitle, 
+			cvn.name
+		)
 		self:T(_msg)
 
-		local heading = UTILS.Round(cvn.navygroup:GetHeadingIntoWind(), 0)
-		_msg = string.format("%s is currently launching/recovering.\n\nRecovery window closes at time %s\n\nBRC is %d",cvn.name, cvn.timeend, heading)
+		--local brc =  UTILS.Round(cvn.brc, 0)
+
+		_msg = string.format("%s is currently Launching/Recovering.\n\nWindow closes at time %s\n\nBRC is %d",
+			cvn.name, 
+			cvn.timeend, 
+			cvn.brc
+		)
 		MESSAGE:New(_msg, 5):ToBlue()
 
 	else
 
-		_msg = string.format("%sAdd turn into wind for CVN %s.", self.traceTitle, cvn.name)
+		local brc = cvn.navygroup:GetHeadingIntoWind(-4, cvn.recoveryspeed)
+		brc = UTILS.Round(brc, 0)
+
+		_msg = string.format("%sAdd turn into wind for CVN %s. BRC=%d", 
+			self.traceTitle, 
+			cvn.name,
+			brc
+		)
 		self:T(_msg)
 
 		local durationSeconds = minutes * 60
@@ -167,11 +206,18 @@ function CVNCONTROL:start_recovery(cvn, minutes)
 		end
 		local recoverySpeed = cvn.recoveryspeed
 
-		_msg =string.format("%s is turning for recovery.\n\nRecovery Window is open from %s until %s.\n\nWind is at %d", cvn.name, timeStart, timeEnd, windDir)
+		_msg =string.format("%s will be turning for Recovery/Launch.\nWindow will be open from %s until %s.\nWind is at %d.\nBRC will be %d", 
+			cvn.name, 
+			timeStart, 
+			timeEnd, 
+			windDir,
+			brc
+		)
 		Message_01 = MESSAGE:New(_msg, 10):ToBlue()
 
 		cvn.navygroup:AddTurnIntoWind(nil, durationSeconds , recoverySpeed, uturn, deckOffSet)
 		cvn.timeend = timeEnd
+		cvn.brc = brc
 
 	end 
 
