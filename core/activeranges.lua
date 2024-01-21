@@ -39,6 +39,8 @@ local useSRS
 ACTIVERANGES.menu = {}
 --ACTIVERANGES.rangeRadio = "377.8"
 ACTIVERANGES.menu.menuTop = MENU_COALITION:New(coalition.side.BLUE, "Active Ranges")
+ACTIVERANGES.spawnatstart = true -- default to spawn targets at mission start
+ACTIVERANGES.activeatstart = false -- default to inactive AI if spawned at mission start
   
 function ACTIVERANGES:Start()	
 	_msg = "[JTF-1 ACTIVERANGES] Start()."
@@ -47,7 +49,9 @@ function ACTIVERANGES:Start()
 	self.SetInitActiveRangeGroups = SET_GROUP:New():FilterPrefixes("ACTIVE_"):FilterOnce() -- create list of group objects with prefix "ACTIVE_"
 	self.SetInitActiveRangeGroups:ForEachGroup(
 	function(group)
-		ACTIVERANGES:initActiveRange(group, false) -- [group] group object for target, [true/false] refresh or create
+		if ACTIVERANGES.spawnatstart then
+			ACTIVERANGES:initActiveRange(group, ACTIVERANGES.activeatstart) -- [group] group object for target, [true/false] refresh or create
+		end
 	end
 	)
 end
