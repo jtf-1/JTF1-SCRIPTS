@@ -1328,6 +1328,603 @@ MARKSPAWN.templates = {
 		["modulation"] = 0,
 		["frequency"] = 305,
 	},	 -- end of ["BVR_F18"]
+	------------------------ CAS ------------------------
+	["CAS_MQ9"] = {
+		["category"] = Group.Category.AIRPLANE,
+		["lateActivation"] = true,
+		["tasks"] = 
+		{
+		}, -- end of ["tasks"]
+		["radioSet"] = false,
+		["task"] = "CAS",
+		["uncontrolled"] = false,
+		["taskSelected"] = true,
+		["route"] = 
+		{
+			["routeRelativeTOT"] = true,
+			["points"] = 
+			{
+				[1] = 
+				{
+					["alt"] = 2000,
+					["action"] = "Turning Point",
+					["alt_type"] = "BARO",
+					["speed"] = 82.222222222222,
+					["task"] = 
+					{
+						["id"] = "ComboTask",
+						["params"] = 
+						{
+							["tasks"] = 
+							{
+								[1] = 
+								{
+									["number"] = 1,
+									["auto"] = false,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "SetUnlimitedFuel",
+											["params"] = 
+											{
+												["value"] = true,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [1]
+								[2] = 
+								{
+									["number"] = 2,
+									["key"] = "CAS",
+									["id"] = "EngageTargets",
+									["enabled"] = true,
+									["auto"] = true,
+									["params"] = 
+									{
+										["targetTypes"] = 
+										{
+											[1] = "Helicopters",
+											[2] = "Ground Units",
+											[3] = "Light armed ships",
+										}, -- end of ["targetTypes"]
+										["priority"] = 0,
+									}, -- end of ["params"]
+								}, -- end of [2]
+								[3] = 
+								{
+									["number"] = 3,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = 2,
+												["name"] = 1,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [3]
+								[4] = 
+								{
+									["number"] = 4,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = 1,
+												["name"] = 3,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [4]
+								[5] = 
+								{
+									["number"] = 5,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["variantIndex"] = 2,
+												["name"] = 5,
+												["formationIndex"] = 2,
+												["value"] = 131074,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [5]
+								[6] = 
+								{
+									["number"] = 6,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = true,
+												["name"] = 15,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [6]
+								[7] = 
+								{
+									["number"] = 7,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["targetTypes"] = 
+												{
+												}, -- end of ["targetTypes"]
+												["name"] = 21,
+												["value"] = "none;",
+												["noTargetTypes"] = 
+												{
+													[1] = "Fighters",
+													[2] = "Multirole fighters",
+													[3] = "Bombers",
+													[4] = "Helicopters",
+													[5] = "UAVs",
+													[6] = "Infantry",
+													[7] = "Fortifications",
+													[8] = "Tanks",
+													[9] = "IFV",
+													[10] = "APC",
+													[11] = "Artillery",
+													[12] = "Unarmed vehicles",
+													[13] = "AAA",
+													[14] = "SR SAM",
+													[15] = "MR SAM",
+													[16] = "LR SAM",
+													[17] = "Aircraft Carriers",
+													[18] = "Cruisers",
+													[19] = "Destroyers",
+													[20] = "Frigates",
+													[21] = "Corvettes",
+													[22] = "Light armed ships",
+													[23] = "Unarmed ships",
+													[24] = "Submarines",
+													[25] = "Cruise missiles",
+													[26] = "Antiship Missiles",
+													[27] = "AA Missiles",
+													[28] = "AG Missiles",
+													[29] = "SA Missiles",
+												}, -- end of ["noTargetTypes"]
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [7]
+								[8] = 
+								{
+									["number"] = 8,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = true,
+												["name"] = 19,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [8]
+								[9] = 
+								{
+									["number"] = 9,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "EPLRS",
+											["params"] = 
+											{
+												["value"] = true,
+												["groupId"] = 1,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [9]
+							}, -- end of ["tasks"]
+						}, -- end of ["params"]
+					}, -- end of ["task"]
+					["type"] = "Turning Point",
+					["ETA"] = 0,
+					["ETA_locked"] = true,
+					["y"] = 378428.12563875,
+					["x"] = -11230.450562956,
+					["speed_locked"] = true,
+					["formation_template"] = "",
+				}, -- end of [1]
+			}, -- end of ["points"]
+		}, -- end of ["route"]
+		["groupId"] = 319,
+		["hidden"] = false,
+		["units"] = 
+		{
+			[1] = 
+			{
+				["alt"] = 2000,
+				["hardpoint_racks"] = true,
+				["alt_type"] = "BARO",
+				["skill"] = "High",
+				["speed"] = 82.222222222222,
+				["type"] = "MQ-9 Reaper",
+				["unitId"] = 3086,
+				["psi"] = 0,
+				["onboard_num"] = "010",
+				["y"] = 378428.12563875,
+				["x"] = -11230.450562956,
+				["name"] = "_MQ9",
+				["payload"] = 
+				{
+					["pylons"] = 
+					{
+						[2] = 
+						{
+							["CLSID"] = "{DB769D48-67D7-42ED-A2BE-108D566C8B1E}",
+						}, -- end of [2]
+						[3] = 
+						{
+							["CLSID"] = "{DB769D48-67D7-42ED-A2BE-108D566C8B1E}",
+						}, -- end of [3]
+					}, -- end of ["pylons"]
+					["fuel"] = 1300,
+					["flare"] = 0,
+					["chaff"] = 0,
+					["gun"] = 100,
+				}, -- end of ["payload"]
+				["heading"] = -1.8785757343974,
+				["callsign"] = 
+				{
+					[1] = 1,
+					[2] = 1,
+					["name"] = "Enfield11",
+					[3] = 1,
+				}, -- end of ["callsign"]
+			}, -- end of [1]
+		}, -- end of ["units"]
+		["y"] = 378428.12563875,
+		["x"] = -11230.450562956,
+		["name"] = "_MQ9",
+		["communication"] = true,
+		["start_time"] = 0,
+		["modulation"] = 0,
+		["frequency"] = 305,
+	}, -- end of ["BVR_MQ9"]
+	["CAS_WINGLOON"] = {
+		["category"] = Group.Category.AIRPLANE,
+		["lateActivation"] = true,
+		["tasks"] = 
+		{
+		}, -- end of ["tasks"]
+		["radioSet"] = false,
+		["task"] = "CAS",
+		["uncontrolled"] = false,
+		["route"] = 
+		{
+			["routeRelativeTOT"] = true,
+			["points"] = 
+			{
+				[1] = 
+				{
+					["alt"] = 2000,
+					["action"] = "Turning Point",
+					["alt_type"] = "BARO",
+					["speed"] = 61.666666666667,
+					["task"] = 
+					{
+						["id"] = "ComboTask",
+						["params"] = 
+						{
+							["tasks"] = 
+							{
+								[1] = 
+								{
+									["number"] = 1,
+									["auto"] = false,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "SetUnlimitedFuel",
+											["params"] = 
+											{
+												["value"] = true,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [1]
+								[2] = 
+								{
+									["number"] = 2,
+									["key"] = "CAS",
+									["id"] = "EngageTargets",
+									["enabled"] = true,
+									["auto"] = true,
+									["params"] = 
+									{
+										["targetTypes"] = 
+										{
+											[1] = "Helicopters",
+											[2] = "Ground Units",
+											[3] = "Light armed ships",
+										}, -- end of ["targetTypes"]
+										["priority"] = 0,
+									}, -- end of ["params"]
+								}, -- end of [2]
+								[3] = 
+								{
+									["number"] = 3,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = 2,
+												["name"] = 1,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [3]
+								[4] = 
+								{
+									["number"] = 4,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = 1,
+												["name"] = 3,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [4]
+								[5] = 
+								{
+									["number"] = 5,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["variantIndex"] = 2,
+												["name"] = 5,
+												["formationIndex"] = 2,
+												["value"] = 131074,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [5]
+								[6] = 
+								{
+									["number"] = 6,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = true,
+												["name"] = 15,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [6]
+								[7] = 
+								{
+									["number"] = 7,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["targetTypes"] = 
+												{
+												}, -- end of ["targetTypes"]
+												["name"] = 21,
+												["value"] = "none;",
+												["noTargetTypes"] = 
+												{
+													[1] = "Fighters",
+													[2] = "Multirole fighters",
+													[3] = "Bombers",
+													[4] = "Helicopters",
+													[5] = "UAVs",
+													[6] = "Infantry",
+													[7] = "Fortifications",
+													[8] = "Tanks",
+													[9] = "IFV",
+													[10] = "APC",
+													[11] = "Artillery",
+													[12] = "Unarmed vehicles",
+													[13] = "AAA",
+													[14] = "SR SAM",
+													[15] = "MR SAM",
+													[16] = "LR SAM",
+													[17] = "Aircraft Carriers",
+													[18] = "Cruisers",
+													[19] = "Destroyers",
+													[20] = "Frigates",
+													[21] = "Corvettes",
+													[22] = "Light armed ships",
+													[23] = "Unarmed ships",
+													[24] = "Submarines",
+													[25] = "Cruise missiles",
+													[26] = "Antiship Missiles",
+													[27] = "AA Missiles",
+													[28] = "AG Missiles",
+													[29] = "SA Missiles",
+												}, -- end of ["noTargetTypes"]
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [7]
+								[8] = 
+								{
+									["number"] = 8,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = true,
+												["name"] = 19,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [8]
+								[9] = 
+								{
+									["number"] = 9,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["enabled"] = true,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "EPLRS",
+											["params"] = 
+											{
+												["value"] = true,
+												["groupId"] = 2,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [9]
+							}, -- end of ["tasks"]
+						}, -- end of ["params"]
+					}, -- end of ["task"]
+					["type"] = "Turning Point",
+					["ETA"] = 0,
+					["ETA_locked"] = true,
+					["y"] = 374191.87334164,
+					["x"] = -10920.480882679,
+					["speed_locked"] = true,
+					["formation_template"] = "",
+				}, -- end of [1]
+			}, -- end of ["points"]
+		}, -- end of ["route"]
+		["groupId"] = 320,
+		["hidden"] = false,
+		["units"] = 
+		{
+			[1] = 
+			{
+				["alt"] = 2000,
+				["hardpoint_racks"] = true,
+				["alt_type"] = "BARO",
+				["livery_id"] = "plaaf",
+				["skill"] = "High",
+				["speed"] = 61.666666666667,
+				["type"] = "WingLoong-I",
+				["unitId"] = 3087,
+				["psi"] = 0,
+				["onboard_num"] = "010",
+				["y"] = 374191.87334164,
+				["x"] = -10920.480882679,
+				["name"] = "wingloon",
+				["payload"] = 
+				{
+					["pylons"] = 
+					{
+						[1] = 
+						{
+							["CLSID"] = "DIS_AKD-10",
+						}, -- end of [1]
+						[2] = 
+						{
+							["CLSID"] = "DIS_AKD-10",
+						}, -- end of [2]
+					}, -- end of ["pylons"]
+					["fuel"] = 400,
+					["flare"] = 0,
+					["chaff"] = 0,
+					["gun"] = 100,
+				}, -- end of ["payload"]
+				["heading"] = 0,
+				["callsign"] = 100,
+			}, -- end of [1]
+		}, -- end of ["units"]
+		["y"] = 374191.87334164,
+		["x"] = -10920.480882679,
+		["name"] = "wingloon",
+		["communication"] = true,
+		["start_time"] = 0,
+		["modulation"] = 0,
+		["frequency"] = 305,
+	}, -- end of ["BVR_WINGLOON"]
     ------------------------ SEAD ------------------------
 	["SEAD_F16"] = {
 		["category"] = Group.Category.AIRPLANE,

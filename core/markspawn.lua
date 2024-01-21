@@ -251,10 +251,15 @@ MARKSPAWN.spawnTypes = { -- types available for spawning
     { template = "BVR_F4",     	msType = "F4",      	category = "air",     role = "CAP"},
     { template = "BVR_F16",    	msType = "F16",     	category = "air",     role = "CAP"},
     { template = "BVR_F18",    	msType = "F18",     	category = "air",     role = "CAP"},
+    ------------------------ CAS ------------------------
+    { template = "CAS_MQ9",    	msType = "MQ9",     	category = "air",     role = "CAS"},
+    { template = "CAS_WINGLOON",msType = "WINGLOON",    category = "air",     role = "CAS"},
     ------------------------ SEAD ------------------------
 	{ template = "SEAD_F16",    msType = "F16SEAD",	category = "air",     role = "SEAD"},
 	{ template = "SEAD_F18",    msType = "F18SEAD",	category = "air",     role = "SEAD"},
 	------------------------ SAM ------------------------
+    { template = "SA2",    		msType = "SA2",	  		category = "ground",  role = "SAM"},
+    { template = "SA3",    		msType = "SA3",	  		category = "ground",  role = "SAM"},
     { template = "SA6",    		msType = "SA6",	  		category = "ground",  role = "SAM"},
     { template = "SA8",    		msType = "SA8", 		category = "ground",  role = "SAM"},
     { template = "SA10",   		msType = "SA10", 		category = "ground",  role = "SAM"},
@@ -265,6 +270,7 @@ MARKSPAWN.spawnTypes = { -- types available for spawning
     { template = "ZSU23_Shilka",msType = "ZSU23",		category = "ground",  role = "AAA"},
     { template = "ZU23_Emp",	msType = "ZU23EMP",		category = "ground",  role = "AAA"},
     { template = "ZU23_Ural",	msType = "ZU23URAL",	category = "ground",  role = "AAA"},
+    { template = "ZU23_Closed",	msType = "ZU23CLOSED",	category = "ground",  role = "AAA"},
 	------------------------ CONVOY ------------------------
     { template = "CON_light",	msType = "CONLIGHT",	category = "ground",  role = "CON"},
     { template = "CON_heavy",	msType = "CONHEAVY",	category = "ground",  role = "CON"},
