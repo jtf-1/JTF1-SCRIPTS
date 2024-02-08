@@ -23,14 +23,19 @@ function JTF1:Start()
 		local settingsFile = lfs.writedir() .. JTF1.defaultServerConfigFile
 
 		if UTILS.CheckFileExists(lfs.writedir(), JTF1.defaultServerConfigFile) then
-			_msg = string.format("%sMission INIT settingsFile = %s", JTF1.traceTitle, settingsFile) 
+			_msg = string.format("%sServer Settings File = %s", JTF1.traceTitle, settingsFile) 
 			BASE:I(_msg)
+			local msgServerSettings = ""
 			dofile(settingsFile)
 			for _name, _value in pairs(LOCALSERVER) do
 				JTF1[_name] = _value
+				msgServerSettings = msgServerSettings .. _name .. " = " .. tostring(_value) .. "\n"
 			end
-			_msg = JTF1.traceTitle .. "Local server settings"
-			BASE:I({_msg, JTF1})
+			_msg = string.format("%sServer Settings follow;\n\n%s\n",
+				JTF1.traceTitle,
+				msgServerSettings
+			)
+			BASE:I(_msg)
 		else
 			_msg = JTF1.traceTitle .. "Error! Server config file not found. Using mission defaults"
 			BASE:E(_msg)
