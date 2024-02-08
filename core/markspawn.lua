@@ -219,7 +219,7 @@ MARKSPAWN.ClassName = "MARKSPAWN"
 --MARKSPAWN.MLTgtArray = {}
 MARKSPAWN.radioPresets = {}
 MARKSPAWN.MLSpawnedGroups = {}
-MARKSPAWN.templates = {}
+--MARKSPAWN.templates = {}
 
 MARKSPAWN.default = {
 	-- DEFAULT VALUES
@@ -315,25 +315,14 @@ function MARKSPAWN:Start()
 			local spawnTemplate
 	
 			-- look in MARKSPAWN templates
-			if self.templates[templateName] then
-				_msg = string.format("%sUse spawn template from MARKSPAWN.templates for %s.",
+			if SPAWNTEMPLATES.templates[templateName] then
+				_msg = string.format("%sUse spawn template from SPAWNTEMPLATES.templates for %s.",
 					self.traceTitle,
 					templateName
 				)
 				self:T(_msg)
 
-				spawnTemplate = self.templates[templateName]
-	
-			-- look in MISSIONSPAWN templates
-			elseif MISSIONSPAWN and MISSIONSPAWN.templates[templateName] then
-				_msg = string.format("%sUse spawn template from MISSIONSPAWN.templates for %s.",
-					self.traceTitle,
-					templateName
-				)
-				self:T(_msg)
-
-				spawnTemplate = MISSIONSPAWN.templates[templateName]
-
+				spawnTemplate = SPAWNTEMPLATES.templates[templateName]
 			end
 
 			-- If we have a template, generate the SPAWN object
@@ -366,7 +355,7 @@ function MARKSPAWN:Start()
 				)
 				spawn:Spawn()
 			
-			-- Template cannot be found in miz, MARKSPAWN.templates or MISSIONSPAWN.templates
+			-- Template cannot be found in miz or SPAWNTEMPLATES.templates
 			else
 				_msg = string.format("%sError! Could not find template %s.",
 					self.traceTitle,
