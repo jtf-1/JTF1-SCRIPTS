@@ -4413,7 +4413,7 @@ MARKSPAWN.templates = {
 		["name"] = "AAA_Zu23Ural",
 		["start_time"] = 0,
 	}, -- end of ["ZU23_Ural"]
-	["ZU23CLOSED"] = {
+	["ZU23_Closed"] = {
 		["category"] = Group.Category.GROUND,
 		["visible"] = false,
 		["lateActivation"] = true,
@@ -4530,7 +4530,7 @@ MARKSPAWN.templates = {
 		["x"] = 39637.695245398,
 		["name"] = "AAA_Zu23Closed",
 		["start_time"] = 0,
-	}, -- end of [ZU23CLOSED]	
+	}, -- end of [ZU23_Closed]	
 	------------------------ CONVOY ------------------------
 	["CON_light"] = {
 		["category"] = Group.Category.GROUND,
@@ -5221,11 +5221,11 @@ MARKSPAWN.templates = {
 }
 
 
--- call the function that initialises the SUPPORTAC module
--- comment out these five lines if markspawn_data.lua is used.
-if MARKSPAWN.Start ~= nil then
-    _msg = MARKSPAWN.traceTitle .. "MARKSPAWN_DATA - call MARKSPAWN:Start()."
-    BASE:I(_msg)
-    MARKSPAWN:Start()
-end
+-- -- call the function that initialises the SUPPORTAC module
+-- -- comment out these five lines if markspawn_data.lua is used.
+-- if MARKSPAWN.Start ~= nil then
+--     _msg = MARKSPAWN.traceTitle .. "MARKSPAWN_DATA - call MARKSPAWN:Start()."
+--     BASE:I(_msg)
+--     MARKSPAWN:Start()
+-- end
   
