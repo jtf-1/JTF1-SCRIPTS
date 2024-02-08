@@ -5,7 +5,7 @@ env.info( "[JTF-1] dynamic_deck_templates" )
 
 if not DYNDECK then -- Error prevention. Create empty container if DDP module not loaded.
     _msg = "[JTF-1 DYNDECK] CORE FILE NOT LOADED!"
-    SUPPORTAC:E(_msg)
+    BASE:E(_msg)
     DYNDECK = {}
 end
 
