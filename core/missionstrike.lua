@@ -877,7 +877,7 @@ function MISSIONSTRIKE:SpawnConvoy(selectedTarget) -- ConvoyTemplates, SpawnHost
 		convoySpawn:SpawnInZone(strikeZone)
 	else
 		-- error to log if an end zone has not been defined/found
-		_msg = string.format("%sError. End zone not found for mission type %s for mission %s in region %s with option %s!",
+		_msg = string.format("%sError. Start zone not found for mission type %s for mission %s in region %s with option %s!",
 			self.traceTitle, 
 			strikeType,
 			strikeName,
