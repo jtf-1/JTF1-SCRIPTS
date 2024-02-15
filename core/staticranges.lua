@@ -25,10 +25,10 @@ STATICRANGES.traceTitle = "[JTF-1 STATICRANGES] "
 local _msg
 
 STATICRANGES.default = {
-	strafeMaxAlt             = 1530, -- [5000ft] in metres. Height of strafe box.
-	strafeBoxLength          = 3000, -- [10000ft] in metres. Length of strafe box.
-	strafeBoxWidth           = 300, -- [1000ft] in metres. Width of Strafe pit box (from 1st listed lane).
-	strafeFoullineDistance   = 610, -- [2000ft] in metres. Min distance for from target for rounds to be counted.
+	strafeMaxAlt             = 1525, -- [5000ft] in metres. Height of strafe box.
+	strafeBoxLength          = 3050, -- [10000ft] in metres. Length of strafe box.
+	strafeBoxWidth           = 366, -- [1200ft] in metres. Width of Strafe pit box (from 1st listed lane).
+	strafeFoullineDistance   = 305, -- [1000ft] in metres. Min distance for from target for rounds to be counted.
 	strafeGoodPass           = 20, -- Min hits for a good pass.
 	--rangeSoundFilesPath      = "Range Soundfiles/" -- Range sound files path in miz
 }
