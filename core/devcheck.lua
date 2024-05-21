@@ -19,7 +19,7 @@ if devState == 1 or JTF1.trace then
 		msgText = msgText .. " TRACE is ON!"
 		-- trace all events
 		BASE:TraceOnOff(true)
-		--BASE:TraceAll(true)
+		BASE:TraceAll(true)
 	end
 
 	_msg = msgLog .. msgText
