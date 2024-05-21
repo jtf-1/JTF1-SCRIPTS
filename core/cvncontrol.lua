@@ -69,7 +69,7 @@ function CVNCONTROL:Start()
 		-- add recovery tanker if cvn.recoverytanker is true
 		function cvn.navygroup:OnAfterElementSpawned(From, Event, To, Element)
 			local _msg = string.format("%sOnAfterElementSpawned for Element %s", CVNCONTROL.traceTitle, Element.name)
-			CVNCONTROL:T({_msg,Element})
+			CVNCONTROL:T(_msg)
 
 			local elementName = Element.name
 	
@@ -88,7 +88,7 @@ function CVNCONTROL:Start()
 				local unit = UNIT:FindByName(cvn.unit)--GROUP:FindByName(cvn.group):GetUnit(1)
 				local unitid = unit:GetID()
 				_msg = string.format("%sUnit object for %s", CVNCONTROL.traceTitle, cvn.unit)
-				CVNCONTROL:T({_msg, unit})
+				CVNCONTROL:T(_msg)
 	
 			end
 	
@@ -119,7 +119,7 @@ function CVNCONTROL:Start()
 		end
 
 		local _msg = string.format("%sNew Navygroup =", self.traceTitle)
-		self:T({_msg,cvn.navygroup})
+		self:T(_msg)
 		
 		-- add top menu if not already added
 		if not self.menu.top then
@@ -162,7 +162,7 @@ end
 function CVNCONTROL:start_recovery(cvn, minutes)
 
 	_msg = string.format("%sstart_recovery().", self.traceTitle)
-	self:T({_msg,cvn})
+	self:T(_msg)
 
 	self:setLights(cvn, self.enums.setlightsrecovery)
 	
