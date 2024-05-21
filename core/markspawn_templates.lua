@@ -5223,9 +5223,9 @@ MARKSPAWN.templates = {
 
 -- -- call the function that initialises the SUPPORTAC module
 -- -- comment out these five lines if markspawn_data.lua is used.
--- if MARKSPAWN.Start ~= nil then
---     _msg = MARKSPAWN.traceTitle .. "MARKSPAWN_DATA - call MARKSPAWN:Start()."
---     BASE:I(_msg)
---     MARKSPAWN:Start()
--- end
+if MARKSPAWN.Start ~= nil then
+    _msg = MARKSPAWN.traceTitle .. "MARKSPAWN_DATA - call MARKSPAWN:Start()."
+    BASE:I(_msg)
+    MARKSPAWN:Start()
+end
   
