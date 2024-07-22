@@ -6,7 +6,7 @@ local devFlag = 8888
 -- If missionflag is true, mission file will load from filesystem with an assert
 local devState = trigger.misc.getUserFlag(devFlag)
 
-if devState == 1 or JTF1.trace then
+if devState == 1 and JTF1.trace then
 	
 	local msgLog = "[JTF-1 DEVCHECK] "
 	local msgText = ""
