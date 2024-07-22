@@ -24,7 +24,9 @@ env.info( "[JTF-1] activeranges.lua" )
 
 ACTIVERANGES = {}
 
-ACTIVERANGES.traceTitle = "[JTF-1] "
+ACTIVERANGES = BASE:Inherit(ACTIVERANGES, BASE:New())
+
+ACTIVERANGES.traceTitle = "[JTF-1 ACTIVERANGES] "
 ACTIVERANGES.version = "0.1"
 ACTIVERANGES.ClassName = "ACTIVERANGES"
 
@@ -44,7 +46,7 @@ ACTIVERANGES.activeatstart = false -- default to inactive AI if spawned at missi
   
 function ACTIVERANGES:Start()	
 	_msg = "[JTF-1 ACTIVERANGES] Start()."
-	BASE:T(_msg)
+	self:T(_msg)
 	self.rangeRadio = self.rangeRadio or self.default.rangeRadio
 	self.SetInitActiveRangeGroups = SET_GROUP:New():FilterPrefixes("ACTIVE_"):FilterOnce() -- create list of group objects with prefix "ACTIVE_"
 	self.SetInitActiveRangeGroups:ForEachGroup(
@@ -62,8 +64,11 @@ end
 -- @param #string refreshRange If false, turn off target AI and add menu option to activate the target
 function ACTIVERANGES:initActiveRange(rangeTemplateGroup, refreshRange)
 	local initGroupName = rangeTemplateGroup:GetName()
-	_msg = "[JTF-1 ACTIVERANGES] initActiveRange()."
-	BASE:T({_msg, initGroupName, refreshRange})
+	_msg = string.format("%sinitActiveRange %s.", 
+		self.traceTitle,
+		initGroupName
+	)
+	self:T({_msg, initGroupName, refreshRange})
 	local rangeTemplate = rangeTemplateGroup.GroupName
 	local activeRange = SPAWN:New(rangeTemplate)
 	if refreshRange == false then 
@@ -95,8 +100,11 @@ end
 -- @param #table rangeGroup Target group object
 -- @param #string rangePrefix Range prefix
 function ACTIVERANGES:addActiveRangeMenu(rangeGroup, rangePrefix)
-	_msg = "[JTF-1 ACTIVERANGES] addActiveRangeMenu()."
-	BASE:T(_msg)
+	_msg = string.format("%saddActiveRangeMenu %s.", 
+		self.traceTitle, 
+		rangePrefix
+	)
+	self:T(_msg)
 	local rangeIdent = string.sub(rangePrefix, 1, 2)
 	if ACTIVERANGES.menu["rangeMenuSub_" .. rangeIdent] == nil then
 		ACTIVERANGES.menu["rangeMenuSub_" .. rangeIdent] = MENU_COALITION:New(coalition.side.BLUE, "R" .. rangeIdent, ACTIVERANGES.menu.menuTop)
@@ -118,25 +126,34 @@ end
 -- @param #boolean withSam Spawn and activate associated SAM target
 -- @param #boolean refreshRange True if target is to being refreshed. False if it is being deactivated.
 function ACTIVERANGES:activateRangeTarget(rangeGroup, rangePrefix, rangeMenu, withSam, refreshRange)
-	_msg = "[JTF-1 ACTIVERANGES] activateRangeTarget()."
-	BASE:T(_msg)
+	_msg = string.format("%sactivateRangeTarget %s.", 
+		self.traceTitle, 
+		rangePrefix
+	)
+	self:T(_msg)
+	local deactivateText = "Deactivate " .. rangePrefix
+	local refreshText = "Refresh " .. rangePrefix
+	local samTemplate = "SAM_" .. rangePrefix
+	local menuName = "rangeMenu_" .. rangePrefix
+
 	if refreshRange == nil then
 		rangeMenu:Remove()
-	ACTIVERANGES.menu["rangeMenu_" .. rangePrefix] = MENU_COALITION:New(coalition.side.BLUE, "Reset " .. rangePrefix, ACTIVERANGES.menu.menuTop)
+		_msg = string.format("%sRemove menu %s", self.traceTitle, menuName)
+		self:T(_msg)
+		ACTIVERANGES.menu[menuName] = MENU_COALITION:New(coalition.side.BLUE, "Reset " .. rangePrefix, ACTIVERANGES.menu.menuTop)
 	end
+
 	rangeGroup:OptionROE(ENUMS.ROE.WeaponFree)
 	rangeGroup:OptionROTEvadeFire()
 	rangeGroup:OptionAlarmStateRed()
 	rangeGroup:SetAIOnOff(true)
-	local deactivateText = "Deactivate " .. rangePrefix
-	local refreshText = "Refresh " .. rangePrefix
-	local samTemplate = "SAM_" .. rangePrefix
+
 	if withSam then
 		local activateSam = SPAWN:New(samTemplate)
 		activateSam:OnSpawnGroup(
 			function (spawnGroup)
-			MENU_COALITION_COMMAND:New(coalition.side.BLUE, deactivateText , ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], spawnGroup, false)
-			MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText .. " with SAM" , ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], spawnGroup, true)
+			MENU_COALITION_COMMAND:New(coalition.side.BLUE, deactivateText , ACTIVERANGES.menu[menuName], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu[menuName], spawnGroup, false)
+			MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText .. " with SAM" , ACTIVERANGES.menu[menuName], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu[menuName], spawnGroup, true)
 			local msg = "All players, dynamic target " .. rangePrefix .. " is active, with SAM."
 			if MISSIONSRS.Radio then -- if MISSIONSRS radio object has been created, send message via default broadcast.
 				MISSIONSRS:SendRadio(msg, ACTIVERANGES.rangeRadio)
@@ -152,11 +169,11 @@ function ACTIVERANGES:activateRangeTarget(rangeGroup, rangePrefix, rangeMenu, wi
 		)
 	:Spawn()
 	else
-		MENU_COALITION_COMMAND:New(coalition.side.BLUE, deactivateText , ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], withSam, false)
+		MENU_COALITION_COMMAND:New(coalition.side.BLUE, deactivateText , ACTIVERANGES.menu[menuName], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu[menuName], withSam, false)
 	if GROUP:FindByName(samTemplate) ~= nil then
-		MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText .. " NO SAM" , ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], withSam, true)
+		MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText .. " NO SAM" , ACTIVERANGES.menu[menuName], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu[menuName], withSam, true)
 	else
-		MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText , ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu["rangeMenu_" .. rangePrefix], withSam, true)
+		MENU_COALITION_COMMAND:New(coalition.side.BLUE, refreshText , ACTIVERANGES.menu[menuName], ACTIVERANGES.resetRangeTarget, ACTIVERANGES, rangeGroup, rangePrefix, ACTIVERANGES.menu[menuName], withSam, true)
 	end
 	local msg = "All players, dynamic target " .. rangePrefix .. " is active."
 	if MISSIONSRS.Radio then -- if MISSIONSRS radio object has been created, send message via default broadcast.
@@ -176,8 +193,12 @@ end
 -- @param #bool withSam Find and destroy associated SAM group.
 -- @param #bool refreshRange True if target is to be refreshed. False if it is to be deactivated. 
 function ACTIVERANGES:resetRangeTarget(rangeGroup, rangePrefix, rangeMenu, withSam, refreshRange)
-	_msg = "[JTF-1 ACTIVERANGES] resetRangeTarget()."
-	BASE:T(_msg)
+	_msg = string.format("%sresetRangeTarget %s.", 
+		self.traceTitle, 
+		rangePrefix
+	)
+	self:T(_msg)
+	local rangeName  = "ACTIVE_" .. rangePrefix
 	if rangeGroup:IsActive() then
 		rangeGroup:Destroy(false)
 		if withSam then
@@ -185,7 +206,7 @@ function ACTIVERANGES:resetRangeTarget(rangeGroup, rangePrefix, rangeMenu, withS
 		end
 		if refreshRange == false then
 			rangeMenu:Remove()
-			local reactivateRangeGroup = self:initActiveRange(GROUP:FindByName("ACTIVE_" .. rangePrefix), false )
+			local reactivateRangeGroup = self:initActiveRange(GROUP:FindByName(rangeName), false )
 			reactivateRangeGroup:OptionROE(ENUMS.ROE.WeaponHold)
 			reactivateRangeGroup:OptionROTEvadeFire()
 			reactivateRangeGroup:OptionAlarmStateGreen()
@@ -197,10 +218,47 @@ function ACTIVERANGES:resetRangeTarget(rangeGroup, rangePrefix, rangeMenu, withS
 			end
 			--MESSAGE:New("Target " .. rangePrefix .. " has been deactivated."):ToAll()
 		else
-			local refreshRangeGroup = self:initActiveRange(GROUP:FindByName("ACTIVE_" .. rangePrefix), true)
-			self.activateRangeTarget(refreshRangeGroup, rangePrefix, rangeMenu, withSam, true)      
+			local refreshRangeGroup = self:initActiveRange(GROUP:FindByName(rangeName), true)
+			self:activateRangeTarget(refreshRangeGroup, rangePrefix, rangeMenu, withSam, true)      
 		end
+		local zoneName = "ACTIVE_"
+		self:removeJunk(rangeName)
 	end
+end
+
+function ACTIVERANGES:removeJunk(_zoneName)
+	_msg = string.format("%sremoveJunk for zone %s.", 
+		self.traceTitle, 
+		_zoneName
+	)
+	self:T(_msg)
+
+	if _zoneName then
+		if ZONE:FindByName(_zoneName) then
+			local cleanup = trigger.misc.getZone(_zoneName)
+			cleanup.point.y = land.getHeight({x = cleanup.point.x, y = cleanup.point.z})
+			local volS = {
+				id = world.VolumeType.SPHERE,
+				params= {
+					point = cleanup.point,
+					radius = cleanup.radius
+				}
+			}
+			world.removeJunk(volS)
+		else
+			_msg = string.format("%sError! Zone %s cannot be found.",
+				self.traceTitle,
+				_zoneName
+			)
+			self:E(_msg)
+		end
+	else
+		_msg = string.format("%sError! No zone defined for cleanup.",
+			self.traceTitle
+		)
+		self:E(_msg)
+	end
+
 end
 
 ACTIVERANGES:Start()
