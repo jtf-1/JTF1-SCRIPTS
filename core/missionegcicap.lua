@@ -9,6 +9,8 @@ MISSIONEGCICAP.version = "0.1"
 -- Default values for CAP settings
 MISSIONEGCICAP.default = {
     coalition = "red",
+	country = 0, -- RUSSIA
+    spawnAlias = "MEGC_",
     resurrection = 900,
     capSpeed = 350,
     capAlt = 25000,
@@ -80,54 +82,54 @@ function MISSIONEGCICAP:Start()
         self.opsWings[wingAlias].Monitor = addWing.Monitor or self.default.Monitor
 
         -- -- set defaults
-        -- self.opsWings[wingAlias]:SetDefaultEngageRange(engageRange)
-        --     --:SetDefaultCAPSpeed(capSpeed)
-        --     --:SetDefaultCAPAlt(capAlt)
-        --     :SetDefaultCAPDirection(capDirection)
-        --     :SetDefaultCAPLeg(capLeg)
-        --     :SetDefaultCAPGrouping(capGrouping)
-        --     :SetDefaultMissionRange(missionRange)
-        --     :SetDefaultNumberAlter5Standby(numberAlter5Standby)
-        --     :SetMaxAliveMissions(maxAliveMissions)
-        --     :SetDefaultRepeatOnFailure(repeatOnFailure)
-        --     :SetTankerAndAWACSInvisible(tankerAndAWACSInvisible)
+        self.opsWings[wingAlias]:SetMaxAliveMissions(maxAliveMissions)
+            :SetDefaultEngageRange(engageRange)
+            --:SetDefaultCAPSpeed(capSpeed)
+            --:SetDefaultCAPAlt(capAlt)
+            --:SetDefaultCAPDirection(capDirection)
+            --:SetDefaultCAPLeg(capLeg)
+            --:SetDefaultCAPGrouping(capGrouping)
+            --:SetDefaultMissionRange(missionRange)
+            --:SetDefaultNumberAlter5Standby(numberAlter5Standby)
+            --
+            --:SetDefaultRepeatOnFailure(repeatOnFailure)
+            --:SetTankerAndAWACSInvisible(tankerAndAWACSInvisible)
     
         -- add sub-wings
         for key, subwing in pairs(addWing.subwings) do
-            local AirBaseName = subwing.airBaseName
+            local airbaseName = subwing.airBaseName
             local subWingAlias = subwing.alias
-            self.opsWings[wingAlias]:AddAirwing(AirBaseName, subWingAlias)
+            self.opsWings[wingAlias]:AddAirwing(airbaseName, subWingAlias)
         end
 
         -- add squadrons to Wing
-        for _index, addSquadron in pairs(addWing.squadrons) do --AddSquadron(TemplateName, SquadName, AirbaseName, AirFrames, Skill, Modex, Livery)
+        for _index, addSquadron in pairs(addWing.squadrons) do --AddSquadron(templateName, squadName, airbaseName, airframes, skill, modex, livery)
             local templateExists = false
-            local TemplateName = addSquadron.TemplateName
-            local templateGroup = GROUP:FindByName(TemplateName)
+            local templateName = addSquadron.TemplateName
+            local templateGroup = GROUP:FindByName(templateName)
 
             if templateGroup then
                 _msg = string.format("%sSpawn Template %s found in mission.",
                     self.traceTitle,
-                    tostring(TemplateName)
+                    tostring(templateName)
                 )
     			self:T(_msg)
                 templateExists = true
             else
                 if SPAWNTEMPLATES then
-                    spawnTemplate = SPAWNTEMPLATES.templates[TemplateName]
+                    local spawnTemplate = SPAWNTEMPLATES.templates[templateName]
                     if spawnTemplate ~= nil then
                         _msg = string.format("%sCAP Template Group %s not found in mission, adding template group from SPAWNTEMPLATES.",
                             self.traceTitle,
-                            tostring(TemplateName)
+                            tostring(templateName)
                         )
                         self:T(_msg)
                         -- add template group to mission
                         local spawnCategory =  spawnTemplate.category
-                        local spawnCoordinate = COORDINATE:New(0,0,0)
-                        local spawnCountryid = self.default.DEFAULT_RED_COUNTRY
-                        local spawnCoalition = coalition.side.RED
-                        -- add a late activated group to be used as the spawn template
-                        local spawn = SPAWN:NewFromTemplate(spawnTemplate, templateName, spawnAlias, true)
+                        local spawnAlias = self.default.spawnAlias
+                        local spawnCountryid = self.default.country
+                        local spawnCoalition = self.default.coalition -- coalition.side.RED
+                        local spawn = SPAWN:NewFromTemplate(spawnTemplate, templateName, nil, true)
                             :InitCountry(spawnCountryid)
                             :InitCoalition(spawnCoalition)
                             :InitCategory(spawnCategory)
@@ -136,23 +138,26 @@ function MISSIONEGCICAP:Start()
                         spawn:OnSpawnGroup(
                             function(spawngroup)
                                 local groupName = spawngroup:GetName()
-                                spawnType.spawn = SPAWN:New(groupName)
+                                _msg = string.format("%sSpawn Template %s added to mission.", 
+                                    self.traceTitle,
+                                    tostring(groupName)
+                                )
+                                self:T(_msg)
                             end
-                            ,spawnType
                         )
                         spawn:Spawn()
                         templateExists = true
                     else
                         _msg = string.format("%sCAP Template Group %s not found in mission or in SPAWNTEMPLATES module!",
                             self.traceTitle,
-                            tostring(TemplateName)
+                            tostring(templateName)
                         )
                         self:E(_msg)
                     end
                 else
                     _msg = string.format("%sCAP Template Group %s not found in mission, and SPAWNTEMPLATES module not loaded!",
                         self.traceTitle,
-                        tostring(TemplateName)
+                        tostring(templateName)
                     )
                     self:E(_msg)
                 end
@@ -160,26 +165,26 @@ function MISSIONEGCICAP:Start()
 
             if templateExists then
                 local type = addSquadron.type
-                local SquadName = addSquadron.SquadName
-                local AirBaseName = addSquadron.AirbaseName
-                local Airframes = addSquadron.Airframes
-                local Skill = addSquadron.Skill 
-                local Modex = addSquadron.Modex
-                local Livery = addSquadron.Livery
+                local squadName = addSquadron.SquadName
+                local airbaseName = addSquadron.AirbaseName
+                local airframes = addSquadron.Airframes
+                local skill = addSquadron.Skill 
+                local modex = addSquadron.Modex
+                local livery = addSquadron.Livery
                 
                 if type == "cap" then
-                    -- AddSquadron(TemplateName, SquadName, AirbaseName, AirFrames, Skill, Modex, Livery)
-                    self.opsWings[wingAlias]:AddSquadron(TemplateName, SquadName, AirBaseName, Airframes, Skill, Modex, Livery)
+                    -- AddSquadron(templateName, squadName, AirbaseName, AirFrames, skill, modex, livery)
+                    self.opsWings[wingAlias]:AddSquadron(templateName, squadName, airbaseName, airframes, skill, modex, livery)
                 else
-                    local Frequency = addSquadron.Frequency
-                    local Modulation = addSquadron.Modulation
+                    local frequency = addSquadron.Frequency
+                    local modulation = addSquadron.Modulation
                     if type == "awacs" then
-                        --AddAWACSSquadron(TemplateName, SquadName, AirbaseName, AirFrames, Skill, Modex, Livery, Frequency, Modulation)
-                        self.opsWings[wingAlias]:AddAWACSSquadron(TemplateName, SquadName, AirBaseName, Airframes, Skill, Modex, Livery)
+                        --AddAWACSSquadron(templateName, squadName, AirbaseName, AirFrames, skill, modex, livery, frequency, modulation)
+                        self.opsWings[wingAlias]:AddAWACSSquadron(templateName, squadName, airbaseName, airframes, skill, modex, livery)
                     elseif type == "tkr" then
-                        local TACAN = addSquadron.TACAN                    
-                        -- AddTankerSquadron(TemplateName, SquadName, AirbaseName, AirFrames, Skill, Modex, Livery, Frequency, Modulation, TACAN)
-                        self.opsWings[wingAlias]:AddTankerSquadron(TemplateName, SquadName, AirBaseName, Airframes, Skill, Modex, Livery)
+                        local tacan = addSquadron.TACAN                    
+                        -- AddTankerSquadron(templateName, squadName, AirbaseName, AirFrames, skill, modex, livery, frequency, modulation, tacan)
+                        self.opsWings[wingAlias]:AddTankerSquadron(templateName, squadName, airbaseName, airframes, skill, modex, livery)
                     else
                         _msg = string.format("%sSquadron TYPE %s not recognised!",
                             self.traceTitle,
@@ -194,7 +199,7 @@ function MISSIONEGCICAP:Start()
         -- add cap patrol points
         for _index, patrolPoint in pairs(addWing.patrolPoints) do
             local type = patrolPoint.type
-            local AirBaseName = patrolPoint.AirbaseName
+            local airbaseName = patrolPoint.AirbaseName
             local zoneName = patrolPoint.zoneName
             local patrolPointZone = ZONE:FindByName(zoneName)
 
@@ -206,11 +211,11 @@ function MISSIONEGCICAP:Start()
                 local LegLength = patrolPoint.LegLength
 
                 if type == "cap" then
-                    self.opsWings[wingAlias]:AddPatrolPointCAP(AirBaseName, Coordinate, Altitude, Speed, Heading, LegLength)
+                    self.opsWings[wingAlias]:AddPatrolPointCAP(airbaseName, Coordinate, Altitude, Speed, Heading, LegLength)
                 elseif type == "tkr" then
-                    self.opsWings[wingAlias]:AddPatrolPointTanker(AirBaseName, Coordinate, Altitude, Speed, Heading, LegLength)
+                    self.opsWings[wingAlias]:AddPatrolPointTanker(airbaseName, Coordinate, Altitude, Speed, Heading, LegLength)
                 elseif type == "awacs" then
-                    self.opsWings[wingAlias]:AddPatrolPointAwacs(AirBaseName, Coordinate, Altitude, Speed, Heading, LegLength)
+                    self.opsWings[wingAlias]:AddPatrolPointAwacs(airbaseName, Coordinate, Altitude, Speed, Heading, LegLength)
                 else
                     _msg = string.format("%sPatrol Point TYPE %s not recognised!",
                         self.traceTitle,
