@@ -24,7 +24,9 @@ MISSIONSTRIKE.menu = {} -- MISSIONSTRIKE menus container
 --MISSIONSTRIKE.spawn = {} -- MISSIONSTRIKE spawn objects container
 
 MISSIONSTRIKE.drawZones = false -- if true, draw mission zones on map
-
+MISSIONSTRIKE.defaults = {
+	staticPrefix = "STATIC_", --prefix to filter on for strikezone static objects
+}
 -- start MISSIONSTRIKE module
 function MISSIONSTRIKE:Start()
 	_msg = self.traceTitle .. "Start()"
@@ -269,10 +271,15 @@ function MISSIONSTRIKE:Start()
 						strikeName
 					)
 					self:T(_msg)
+					
 					-- build a SET of static object within the mission.strikezone
+					local staticPrefix = self.defaults.staticPrefix
+
 					local setStrikeTargetStatics = SET_STATIC:New()
 						:FilterZones({zoneStrikeZone})
-						:FilterStart()
+						:FilterPrefixes(staticPrefix)
+						:FilterOnce()
+					
 					-- add each static to the mission
 					setStrikeTargetStatics:ForEachStatic(
 						function(static)
@@ -1556,4 +1563,9 @@ MISSIONSTRIKE.convoyTemplates = {
 			threats = nil
 		},
 	},
+}
+
+-- Static name prefixes to exlude from Exclude
+MISSIONSTRIKE.excludePrefix = {
+	"MEGC_",
 }
