@@ -228,7 +228,7 @@ function SUPPORTAC:Start()
 					)
 
 					--_msg = string.format(self.traceTitle .. "New late activated mission spawn template added for %s", missionSpawnAlias)
-					SUPPORTAC:T(_msg)
+					--SUPPORTAC:T(_msg)
 					
 					-- call NewMission() to create the initial mission for the support aircraft
 					-- subsequent mission restarts will be called after the mission's AUFTRAG is cancelled
