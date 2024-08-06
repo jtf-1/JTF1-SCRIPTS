@@ -561,11 +561,11 @@ SPAWNTEMPLATES.templates = {
 	}, -- end of ["BVR_SU27"]
 	["BVR_F4"] = {
 		["category"] = Group.Category.AIRPLANE,
+		["dynSpawnTemplate"] = false,
 		["lateActivation"] = true,
 		["tasks"] = 
 		{
 		}, -- end of ["tasks"]
-		["radioSet"] = false,
 		["task"] = "CAP",
 		["uncontrolled"] = false,
 		["route"] = 
@@ -575,10 +575,10 @@ SPAWNTEMPLATES.templates = {
 			{
 				[1] = 
 				{
-					["alt"] = 85,
+					["alt"] = 2000,
 					["action"] = "Turning Point",
 					["alt_type"] = "BARO",
-					["speed"] = 5.5555555555556,
+					["speed"] = 256.94444444444,
 					["task"] = 
 					{
 						["id"] = "ComboTask",
@@ -589,9 +589,25 @@ SPAWNTEMPLATES.templates = {
 								[1] = 
 								{
 									["enabled"] = true,
-									["auto"] = false,
-									["id"] = "WrappedAction",
+									["key"] = "CAP",
+									["id"] = "EngageTargets",
 									["number"] = 1,
+									["auto"] = true,
+									["params"] = 
+									{
+										["targetTypes"] = 
+										{
+											[1] = "Air",
+										}, -- end of ["targetTypes"]
+										["priority"] = 0,
+									}, -- end of ["params"]
+								}, -- end of [1]
+								[2] = 
+								{
+									["enabled"] = true,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["number"] = 2,
 									["params"] = 
 									{
 										["action"] = 
@@ -599,101 +615,202 @@ SPAWNTEMPLATES.templates = {
 											["id"] = "Option",
 											["params"] = 
 											{
-												["value"] = 0,
-												["name"] = 0,
+												["value"] = true,
+												["name"] = 17,
 											}, -- end of ["params"]
 										}, -- end of ["action"]
 									}, -- end of ["params"]
-								}, -- end of [1]
+								}, -- end of [2]
+								[3] = 
+								{
+									["enabled"] = true,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["number"] = 3,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = 4,
+												["name"] = 18,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [3]
+								[4] = 
+								{
+									["enabled"] = true,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["number"] = 4,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["value"] = true,
+												["name"] = 19,
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [4]
+								[5] = 
+								{
+									["enabled"] = true,
+									["auto"] = true,
+									["id"] = "WrappedAction",
+									["number"] = 5,
+									["params"] = 
+									{
+										["action"] = 
+										{
+											["id"] = "Option",
+											["params"] = 
+											{
+												["targetTypes"] = 
+												{
+												}, -- end of ["targetTypes"]
+												["name"] = 21,
+												["value"] = "none;",
+												["noTargetTypes"] = 
+												{
+													[1] = "Fighters",
+													[2] = "Multirole fighters",
+													[3] = "Bombers",
+													[4] = "Helicopters",
+													[5] = "UAVs",
+													[6] = "Infantry",
+													[7] = "Fortifications",
+													[8] = "Tanks",
+													[9] = "IFV",
+													[10] = "APC",
+													[11] = "Artillery",
+													[12] = "Unarmed vehicles",
+													[13] = "AAA",
+													[14] = "SR SAM",
+													[15] = "MR SAM",
+													[16] = "LR SAM",
+													[17] = "Aircraft Carriers",
+													[18] = "Cruisers",
+													[19] = "Destroyers",
+													[20] = "Frigates",
+													[21] = "Corvettes",
+													[22] = "Light armed ships",
+													[23] = "Unarmed ships",
+													[24] = "Submarines",
+													[25] = "Cruise missiles",
+													[26] = "Antiship Missiles",
+													[27] = "AA Missiles",
+													[28] = "AG Missiles",
+													[29] = "SA Missiles",
+												}, -- end of ["noTargetTypes"]
+											}, -- end of ["params"]
+										}, -- end of ["action"]
+									}, -- end of ["params"]
+								}, -- end of [5]
 							}, -- end of ["tasks"]
 						}, -- end of ["params"]
 					}, -- end of ["task"]
 					["type"] = "Turning Point",
 					["ETA"] = 0,
 					["ETA_locked"] = true,
-					["y"] = 550833.11560466,
-					["x"] = 154539.36809252,
-					["formation_template"] = "",
+					["y"] = 435467.56959117,
+					["x"] = 30613.207113639,
 					["speed_locked"] = true,
+					["formation_template"] = "",
 				}, -- end of [1]
 			}, -- end of ["points"]
 		}, -- end of ["route"]
-		["groupId"] = 581,
+		["groupId"] = 332,
 		["hidden"] = false,
 		["units"] = 
 		{
 			[1] = 
 			{
-				["alt"] = 85,
+				["alt"] = 2000,
+				["hardpoint_racks"] = true,
 				["alt_type"] = "BARO",
+				["livery_id"] = "iriaf-3-6564",
 				["skill"] = "Random",
-				["speed"] = 5.5555555555556,
-				["type"] = "F-4E",
-				["unitId"] = 1570,
+				["speed"] = 256.94444444444,
+				["type"] = "F-4E-45MC",
+				["unitId"] = 3236,
 				["psi"] = 0,
-				["y"] = 550833.11560466,
-				["x"] = 154539.36809252,
-				["name"] = "Aerial-5-1",
+				["onboard_num"] = "010",
+				["y"] = 435467.56959117,
+				["x"] = 30613.207113639,
+				["name"] = "BVR_F4-1",
 				["payload"] = 
 				{
 					["pylons"] = 
 					{
 						[1] = 
 						{
-							["CLSID"] = "{7B4B122D-C12C-4DB4-834E-4D8BB4D863A8}",
+							["CLSID"] = "{F4_SARGENT_TANK_370_GAL}",
 						}, -- end of [1]
 						[2] = 
 						{
-							["CLSID"] = "{9DDF5297-94B9-42FC-A45E-6E316121CD85}",
+							["CLSID"] = "{AIM-9M}",
 						}, -- end of [2]
-						[3] = 
-						{
-							["CLSID"] = "{8D399DDA-FF81-4F14-904D-099B34FE7918}",
-						}, -- end of [3]
 						[4] = 
 						{
-							["CLSID"] = "{8D399DDA-FF81-4F14-904D-099B34FE7918}",
+							["CLSID"] = "{AIM-9M}",
 						}, -- end of [4]
+						[5] = 
+						{
+							["CLSID"] = "{HB_F4E_AIM-7M}",
+						}, -- end of [5]
 						[6] = 
 						{
-							["CLSID"] = "{8D399DDA-FF81-4F14-904D-099B34FE7918}",
+							["CLSID"] = "{HB_F4E_AIM-7M}",
 						}, -- end of [6]
-						[7] = 
-						{
-							["CLSID"] = "{8D399DDA-FF81-4F14-904D-099B34FE7918}",
-						}, -- end of [7]
 						[8] = 
 						{
-							["CLSID"] = "{9DDF5297-94B9-42FC-A45E-6E316121CD85}",
+							["CLSID"] = "{HB_F4E_AIM-7M}",
 						}, -- end of [8]
 						[9] = 
 						{
-							["CLSID"] = "{7B4B122D-C12C-4DB4-834E-4D8BB4D863A8}",
+							["CLSID"] = "{HB_F4E_AIM-7M}",
 						}, -- end of [9]
+						[10] = 
+						{
+							["CLSID"] = "{AIM-9M}",
+						}, -- end of [10]
+						[12] = 
+						{
+							["CLSID"] = "{AIM-9M}",
+						}, -- end of [12]
+						[13] = 
+						{
+							["CLSID"] = "{F4_SARGENT_TANK_370_GAL_R}",
+						}, -- end of [13]
+						[14] = 
+						{
+							["CLSID"] = "{HB_ALE_40_30_60}",
+						}, -- end of [14]
 					}, -- end of ["pylons"]
-					["fuel"] = "4864",
+					["fuel"] = 5510.5,
 					["flare"] = 30,
-					["chaff"] = 60,
+					["ammo_type"] = 1,
+					["chaff"] = 120,
 					["gun"] = 100,
 				}, -- end of ["payload"]
-				["heading"] = 2.6231431729977,
-				["callsign"] = 
-				{
-					[1] = 5,
-					[2] = 1,
-					["name"] = "Dodge11",
-					[3] = 1,
-				}, -- end of ["callsign"]
-				["onboard_num"] = "014",
+				["heading"] = 0,
+				["callsign"] = 100,
 			}, -- end of [1]
 		}, -- end of ["units"]
-		["y"] = 550833.11560466,
-		["x"] = 154539.36809252,
+		["y"] = 435467.56959117,
+		["x"] = 30613.207113639,
 		["name"] = "BVR_F4",
 		["communication"] = true,
 		["start_time"] = 0,
 		["modulation"] = 0,
-		["frequency"] = 251,
+		["frequency"] = 305,
 	}, -- end of ["BVR_F4"]
 	["BVR_F16"] = {
 		["category"] = Group.Category.AIRPLANE,
