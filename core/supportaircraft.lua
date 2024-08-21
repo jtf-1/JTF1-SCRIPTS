@@ -43,11 +43,11 @@ env.info( "[JTF-1] supportaircraft.lua" )
 --
 
 SUPPORTAC = {}
+SUPPORTAC = BASE:Inherit(SUPPORTAC, BASE:New())
 SUPPORTAC.traceTitle = "[JTF-1 SUPPORTAC] "
 SUPPORTAC.ClassName = "SUPPORTAC"
 SUPPORTAC.useSRS = true -- if true, messages will be sent over SRS using the MISSIONSRS module. If false, messages will be sent as in-game text.
 SUPPORTAC.trace = false -- tracing off by default if false
-SUPPORTAC = BASE:Inherit(SUPPORTAC, BASE:New())
 
 local _msg -- used for debug messages only
 local useSRS
@@ -64,9 +64,6 @@ function SUPPORTAC:Start()
 	-- set tracing on or off
 	self:TraceOnOff(self.trace)
 	self:TraceAll(self.trace)
-	local traceState = tostring(self.trace)
-	_msg = string.format("%sModule Tracing is %s.", self.traceTitle, traceState)
-	self:I(_msg)
 
 	-- default to not using SRS unless both the server AND the module request it AND MISSIONSRS.Radio.active is true
 	useSRS = (JTF1.useSRS and self.useSRS) and MISSIONSRS.Radio.active 
@@ -83,7 +80,7 @@ function SUPPORTAC:Start()
 		if missionZone then -- CHECK MISSION ZONE
 		
 			-- if trace is on, draw the zone on the map
-			if self:IsTrace() then 
+			if self.trace then 
 				-- draw mission zone on map
 				missionZone:DrawZone()
 			end
@@ -215,6 +212,9 @@ function SUPPORTAC:Start()
 					mission.missionSpawnTemplate:InitLateActivated() -- set template to late activated
 					mission.missionSpawnTemplate:InitPositionCoordinate(mission.spawnCoordinate) -- set the default location at which the template is created
 					mission.missionSpawnTemplate:InitHeading(mission.heading) -- set the default heading for the spawn template
+					if mission.livery then
+						mission.missionSpawnTemplate:InitLivery(mission.livery)
+					end
 					mission.missionSpawnTemplate:OnSpawnGroup(
 						function(spawngroup)
 							local spawnGroupName = spawngroup:GetName()
