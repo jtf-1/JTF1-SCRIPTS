@@ -7,6 +7,7 @@ BASE:TraceOnOff(false)
 
 JTF1 = {
 	traceTitle = "[JTF-1 MISSIONINIT] ",
+	trace = false,
 	missionRestart = "MISSION_RESTART", -- Message to trigger mission restart via jtf1-hooks
 	flagLoadMission = 9999, -- flag for load misison trigger
 	defaultServerConfigFile = "LocalServerSettings.lua", -- srs server settings file name
