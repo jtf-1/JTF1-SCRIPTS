@@ -26,8 +26,8 @@ ADMIN = {
 	defaultMissionRestart = "MISSION_RESTART",
 	defaultMissionLoad = "MISSION_LOAD",
 	defaultMissionFile = "missions.lua",
-	defaultMissionFolder = "missions",
-	defaultMissionPath = "C:\\Users\\jtf-1\\Saved Games\\missions",
+	defaultMissionFolder = "Missions\\JTF-1 Missions",
+	--defaultMissionPath = lfs.writedir() .. "\\Missions\\",
 	adminUnitName = "XX_", -- String to locate within unit name for admin slots
 }
 
@@ -57,7 +57,7 @@ function ADMIN:Start()
 		self:T(_msg)
 	else
 		if lfs then -- check if game environment is desanitised
-			ADMIN.missionPath = (lfs.writedir() .. "\\" .. ADMIN.defaultMissionFolder) -- set mission path to current write directory
+			ADMIN.missionPath = (lfs.writedir() .. ADMIN.defaultMissionFolder) -- set mission path to current write directory
 		else
 			ADMIN.missionPath = "" -- empty mission path will bypass all but restart mission menu option
 		end
@@ -65,13 +65,13 @@ function ADMIN:Start()
 
 	-- set full path to mission list
 	local missionPathFile = ADMIN.missionPath .. "\\" .. ADMIN.missionFile
-	self:T(ADMIN.traceTitle .. "mission list file: " .. missionPathFile)
+	self:I(ADMIN.traceTitle .. "mission list file: " .. missionPathFile)
 	-- check mission list lua file exists. If it does run it. 
 	if UTILS.CheckFileExists(ADMIN.missionPath, ADMIN.missionFile) then
-		self:T( ADMIN.traceTitle .. "Mission list file exists")
+		self:I( ADMIN.traceTitle .. "Mission list file exists")
 		dofile(missionPathFile)
 		ADMIN.missionList = MISSIONLIST -- map mission list values to ADMIN.missionList
-		self:T({ADMIN.traceTitle .. "ADMIN.missionList", ADMIN.missionList})
+		self:I({ADMIN.traceTitle .. "ADMIN.missionList", ADMIN.missionList})
 		-- if present insert local server mission list at top of ADMIN.missionList
 		if JTF1.missionList then
 			self:T({ADMIN.traceTitle .. "JTF1.missionList", ADMIN.missionList})
@@ -117,9 +117,9 @@ end
 function ADMIN:LoadMission(playerName, missionFile)
 	local adminMessage = ADMIN.missionRestart
 	if playerName then
-		self:T(ADMIN.traceTitle .. "Restart or load called by player name: " .. playerName)
+		self:I(ADMIN.traceTitle .. "Restart or load called by player name: " .. playerName)
 	else
-		self:T(ADMIN.traceTitle .. "Restart or load called by non-player!")
+		self:I(ADMIN.traceTitle .. "Restart or load called by non-player!")
 	end
 	if missionFile then
 		adminMessage = ADMIN.missionLoad .. "-" .. missionFile

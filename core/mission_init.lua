@@ -21,9 +21,10 @@ function JTF1:Start()
 	else
 
 		-- load local server settings file
-		local settingsFile = lfs.writedir() .. JTF1.defaultServerConfigFile
+		local settingsFolder = lfs.writedir() .. "Missions\\"
+		local settingsFile = settingsFolder .. JTF1.defaultServerConfigFile
 
-		if UTILS.CheckFileExists(lfs.writedir(), JTF1.defaultServerConfigFile) then
+		if UTILS.CheckFileExists(settingsFolder, JTF1.defaultServerConfigFile) then
 			_msg = string.format("%sServer Settings File = %s", JTF1.traceTitle, settingsFile) 
 			BASE:I(_msg)
 			local msgServerSettings = ""

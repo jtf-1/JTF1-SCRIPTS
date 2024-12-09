@@ -9,12 +9,12 @@ MISSIONLIST = {
         },
     },
     {
-        missionName = "PG Fun Map",
+        missionName = "PG2 Fun Map",
         missionMenu = {
-            {menuText = "Day", missionFile = "JTF-1_PG_DAY_Fun_Map.miz"},
-            {menuText = "Day Weather", missionFile = "JTF-1_PG_DAY_WEATHER_Fun_Map.miz"},
-            {menuText = "Night", missionFile = "JTF-1_PG_NIGHT_Fun_Map.miz"},
-            {menuText = "Night Weather", missionFile = "JTF-1_PG_NIGHT_WEATHER_Fun_Map.miz"},
+            {menuText = "Day", missionFile = "JTF-1_PG2_DAY_Fun_Map.miz"},
+            {menuText = "Day Weather", missionFile = "JTF-1_PG2_DAY_WEATHER_Fun_Map.miz"},
+            {menuText = "Night", missionFile = "JTF-1_PG2_NIGHT_Fun_Map.miz"},
+            {menuText = "Night Weather", missionFile = "JTF-1_PG2_NIGHT_WEATHER_Fun_Map.miz"},
         },
     },
     {
@@ -24,6 +24,15 @@ MISSIONLIST = {
             {menuText = "Day Weather", missionFile = "JTF-1_NTTR_DAY_WEATHER_Fun_Map.miz"},
             {menuText = "Night", missionFile = "JTF-1_NTTR_NIGHT_Fun_Map.miz"},
             {menuText = "Night Weather", missionFile = "JTF-1_NTTR_NIGHT_WEATHER_Fun_Map.miz"},
+        },
+    },
+    {
+        missionName = "Afghanistan Fun Map",
+        missionMenu = {
+            {menuText = "Day", missionFile = "JTF-1_AFG_DAY_Fun_Map.miz"},
+            {menuText = "Day Weather", missionFile = "JTF-1_AFG_DAY_WEATHER_Fun_Map.miz"},
+            {menuText = "Night", missionFile = "JTF-1_AFG_NIGHT_Fun_Map.miz"},
+            {menuText = "Night Weather", missionFile = "JTF-1_AFG_NIGHT_WEATHER_Fun_Map.miz"},
         },
     },
 }
